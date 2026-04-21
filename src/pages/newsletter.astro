@@ -1,0 +1,252 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import JsonLd from '../components/JsonLd.astro';
+import {
+  SUBSCRIBER_COUNT,
+  TESTIMONIALS,
+  RECENT_ISSUES,
+} from '../data/newsletter';
+
+const subscriberLine =
+  SUBSCRIBER_COUNT && SUBSCRIBER_COUNT > 0
+    ? `Join ${SUBSCRIBER_COUNT.toLocaleString()} security professionals`
+    : 'Join security professionals';
+
+const benefits = [
+  'NISPOM and DCSA regulation changes that affect your program',
+  'Practical compliance tips from an experienced FSO',
+  'Templates, checklists, and tools to make your job easier',
+];
+
+const recentIssues = [...RECENT_ISSUES]
+  .sort((a, b) => b.date.valueOf() - a.date.valueOf())
+  .slice(0, 3);
+
+const breadcrumbItems = [
+  { name: 'Home', url: '/' },
+  { name: 'Newsletter', url: '/newsletter', current: true },
+];
+---
+
+<BaseLayout
+  title="The FSO Brief — Weekly NISPOM Compliance Updates"
+  description="Join security professionals getting one regulation update, one practical tip, and one resource every week. A weekly email for working FSOs."
+>
+  <JsonLd type="BreadcrumbList" data={{ items: breadcrumbItems }} />
+
+  <!-- Hero + primary CTA -->
+  <section class="bg-navy-700 text-white border-b-4 border-gold-500">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-20">
+      <Breadcrumbs items={breadcrumbItems} />
+
+      <p
+        class="mt-4 inline-block text-xs font-semibold uppercase tracking-widest text-gold-300"
+      >
+        The FSO Brief
+      </p>
+      <h1
+        class="mt-2 font-serif text-4xl md:text-5xl lg:text-6xl leading-tight text-white"
+      >
+        The FSO Brief: Weekly NISPOM Compliance Updates You Can Actually Use
+      </h1>
+      <p class="mt-5 text-lg md:text-xl text-navy-100">
+        {subscriberLine} getting one regulation update, one practical tip, and one
+        resource every week.
+      </p>
+
+      <form
+        action="https://app.kit.com/forms/9353742/subscriptions"
+        method="post"
+        data-kit-form
+        class="mt-8 flex flex-col gap-2 max-w-xl"
+      >
+        <label class="sr-only" for="newsletter-email">Email address</label>
+        <input
+          id="newsletter-email"
+          type="email"
+          name="email_address"
+          required
+          autocomplete="email"
+          placeholder="you@company.com"
+          class="w-full rounded border border-navy-300 bg-white px-4 py-3 text-navy-900 placeholder:text-navy-400 focus:outline-none focus:ring-2 focus:ring-gold-500"
+        />
+        <button
+          type="submit"
+          class="w-full rounded bg-gold-500 px-6 py-3 font-semibold text-navy-900 hover:bg-gold-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gold-500 transition-colors"
+        >
+          Subscribe free
+        </button>
+      </form>
+
+      <div
+        data-kit-success
+        hidden
+        class="mt-4 rounded border border-green-300 bg-green-50 px-4 py-3 text-green-900 max-w-xl"
+      >
+        <strong>Thanks!</strong> Check your email to confirm your subscription.
+      </div>
+      <div
+        data-kit-error
+        hidden
+        class="mt-4 rounded border border-red-300 bg-red-50 px-4 py-3 text-red-900 max-w-xl"
+      >
+        Something went wrong. Please try again.
+      </div>
+
+      <p class="mt-2 text-xs text-navy-200">
+        One email per week. No spam. Unsubscribe any time.
+      </p>
+    </div>
+  </section>
+
+  <!-- What you'll get -->
+  <section
+    class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12"
+    aria-labelledby="benefits-heading"
+  >
+    <h2
+      id="benefits-heading"
+      class="font-serif text-2xl md:text-3xl text-navy-800"
+    >
+      What you'll get every week
+    </h2>
+    <ul class="mt-6 space-y-4" role="list">
+      {
+        benefits.map((benefit) => (
+          <li class="flex items-start gap-3">
+            <svg
+              class="shrink-0 mt-1 h-5 w-5 text-gold-500"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+              aria-hidden="true"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M16.704 5.29a1 1 0 0 1 .006 1.414l-7.07 7.115a1 1 0 0 1-1.42.007L3.29 8.91a1 1 0 1 1 1.42-1.408l4.22 4.257 6.36-6.4a1 1 0 0 1 1.414-.07z"
+                clip-rule="evenodd"
+              />
+            </svg>
+            <span class="text-lg text-navy-900">{benefit}</span>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <!-- Social proof -->
+  {
+    TESTIMONIALS.length > 0 && (
+      <section
+        class="bg-navy-50 border-y border-navy-100"
+        aria-labelledby="social-proof-heading"
+      >
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
+          <h2
+            id="social-proof-heading"
+            class="font-serif text-2xl md:text-3xl text-navy-800 text-center"
+          >
+            What readers are saying
+          </h2>
+          <div class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {TESTIMONIALS.map((t) => (
+              <figure class="rounded-lg border border-navy-100 bg-white p-6 shadow-sm">
+                <svg
+                  class="h-7 w-7 text-gold-400"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  aria-hidden="true"
+                >
+                  <path d="M7.17 6A5 5 0 0 0 3 11v7h7v-7H5.5A3.5 3.5 0 0 1 9 7.5V6H7.17zM17.17 6A5 5 0 0 0 13 11v7h7v-7h-4.5A3.5 3.5 0 0 1 19 7.5V6h-1.83z" />
+                </svg>
+                <blockquote class="mt-3 text-navy-900 leading-relaxed">
+                  "{t.quote}"
+                </blockquote>
+                <figcaption class="mt-4 text-sm">
+                  <span class="font-semibold text-navy-800">{t.name}</span>
+                  {(t.role || t.company) && (
+                    <span class="block text-navy-600">
+                      {t.role}
+                      {t.role && t.company && ' · '}
+                      {t.company}
+                    </span>
+                  )}
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  <!-- Recent Issues -->
+  {
+    recentIssues.length > 0 && (
+      <section
+        class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16"
+        aria-labelledby="recent-issues-heading"
+      >
+        <h2
+          id="recent-issues-heading"
+          class="font-serif text-2xl md:text-3xl text-navy-800"
+        >
+          Recent issues
+        </h2>
+        <ol class="mt-6 divide-y divide-navy-100 border border-navy-100 rounded-lg overflow-hidden bg-white">
+          {recentIssues.map((issue) => (
+            <li class="p-5 flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-2">
+              <div class="min-w-0">
+                {issue.url ? (
+                  <a
+                    href={issue.url}
+                    class="font-serif text-lg text-navy-800 hover:text-gold-700"
+                  >
+                    {issue.title}
+                  </a>
+                ) : (
+                  <span class="font-serif text-lg text-navy-800">
+                    {issue.title}
+                  </span>
+                )}
+                {issue.summary && (
+                  <p class="mt-1 text-sm text-navy-700">{issue.summary}</p>
+                )}
+              </div>
+              <time
+                datetime={issue.date.toISOString()}
+                class="shrink-0 text-sm text-navy-500"
+              >
+                {issue.date.toLocaleDateString('en-US', {
+                  year: 'numeric',
+                  month: 'short',
+                  day: 'numeric',
+                })}
+              </time>
+            </li>
+          ))}
+        </ol>
+      </section>
+    )
+  }
+
+  <!-- Closing CTA -->
+  <section class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
+    <div
+      class="rounded-lg border border-gold-300 bg-gold-50 p-6 md:p-10 text-center"
+    >
+      <h2 class="font-serif text-2xl md:text-3xl text-navy-800">
+        Start getting The FSO Brief this week.
+      </h2>
+      <p class="mt-2 text-navy-700">
+        Free. One email per week. Unsubscribe any time.
+      </p>
+      <a
+        href="#newsletter-email"
+        class="mt-6 inline-flex items-center justify-center rounded bg-navy-700 px-7 py-3 font-semibold text-white hover:bg-navy-800 transition-colors"
+      >
+        Subscribe free
+      </a>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,65 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { CATEGORY_META } from '../content.config';
+import { getArticleUrl } from '../utils/urls';
+
+interface Props {
+  post: CollectionEntry<'blog'>;
+}
+
+const { post } = Astro.props;
+const { title, description, pubDate, updatedDate, category, featuredImage } =
+  post.data;
+
+const cat = CATEGORY_META[category];
+const date = updatedDate ?? pubDate;
+const href = getArticleUrl(post);
+---
+
+<article
+  class="group flex flex-col h-full rounded-lg border border-navy-100 bg-white shadow-sm hover:shadow-md hover:border-navy-200 transition-all"
+>
+  {
+    featuredImage && (
+      <a href={href} class="block overflow-hidden rounded-t-lg">
+        <img
+          src={featuredImage}
+          alt=""
+          loading="lazy"
+          class="w-full h-44 object-cover group-hover:scale-[1.02] transition-transform"
+        />
+      </a>
+    )
+  }
+  <div class="p-5 flex flex-col flex-1">
+    <div class="flex items-center gap-2 text-xs uppercase tracking-wide">
+      <a
+        href={`/category/${category}`}
+        class="font-semibold text-gold-700 hover:text-gold-600"
+      >
+        {cat.label}
+      </a>
+      <span class="text-navy-300">•</span>
+      <time datetime={date.toISOString()} class="text-navy-500">
+        {date.toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'short',
+          day: 'numeric',
+        })}
+      </time>
+    </div>
+    <h3 class="mt-2 font-serif text-xl text-navy-800 leading-snug">
+      <a href={href} class="hover:text-gold-700">
+        {title}
+      </a>
+    </h3>
+    <p class="mt-2 text-navy-900/75 text-[0.95rem] flex-1">{description}</p>
+    <a
+      href={href}
+      class="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-navy-700 hover:text-gold-600"
+    >
+      Read article
+      <span aria-hidden="true">→</span>
+    </a>
+  </div>
+</article>

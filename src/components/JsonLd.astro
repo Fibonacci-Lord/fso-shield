@@ -1,0 +1,163 @@
+---
+import { SITE } from '../consts';
+
+type SchemaType =
+  | 'Article'
+  | 'FAQPage'
+  | 'HowTo'
+  | 'Product'
+  | 'BreadcrumbList'
+  | 'Organization';
+
+interface Props {
+  type: SchemaType;
+  data: Record<string, unknown>;
+}
+
+const { type, data } = Astro.props;
+
+const siteUrl = (Astro.site ?? new URL(SITE.url)).toString().replace(/\/$/, '');
+
+function absolute(url?: string): string | undefined {
+  if (!url) return undefined;
+  if (/^https?:\/\//i.test(url)) return url;
+  return `${siteUrl}${url.startsWith('/') ? url : `/${url}`}`;
+}
+
+function buildArticle(d: Record<string, any>) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: d.title,
+    description: d.description,
+    image: absolute(d.image) ?? absolute(SITE.defaultOgImage),
+    datePublished: d.pubDate instanceof Date ? d.pubDate.toISOString() : d.pubDate,
+    dateModified:
+      d.updatedDate instanceof Date
+        ? d.updatedDate.toISOString()
+        : d.updatedDate ??
+          (d.pubDate instanceof Date ? d.pubDate.toISOString() : d.pubDate),
+    author: {
+      '@type': 'Person',
+      name: d.author ?? SITE.author,
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: SITE.organization.name,
+      logo: {
+        '@type': 'ImageObject',
+        url: absolute(SITE.organization.logo),
+      },
+    },
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': absolute(d.url ?? Astro.url.pathname),
+    },
+    keywords: Array.isArray(d.keywords) ? d.keywords.join(', ') : d.keywords,
+  };
+}
+
+function buildFAQ(d: Record<string, any>) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: (d.questions ?? []).map((q: { question: string; answer: string }) => ({
+      '@type': 'Question',
+      name: q.question,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: q.answer,
+      },
+    })),
+  };
+}
+
+function buildHowTo(d: Record<string, any>) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'HowTo',
+    name: d.name ?? d.title,
+    description: d.description,
+    image: absolute(d.image),
+    totalTime: d.totalTime,
+    estimatedCost: d.estimatedCost,
+    supply: d.supplies,
+    tool: d.tools,
+    step: (d.steps ?? []).map(
+      (s: { name: string; text: string; image?: string; url?: string }, i: number) => ({
+        '@type': 'HowToStep',
+        position: i + 1,
+        name: s.name,
+        text: s.text,
+        image: absolute(s.image),
+        url: absolute(s.url),
+      })
+    ),
+  };
+}
+
+function buildProduct(d: Record<string, any>) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name: d.title ?? d.name,
+    description: d.description,
+    image: absolute(d.image) ?? absolute(SITE.defaultOgImage),
+    category: d.category,
+    brand: {
+      '@type': 'Brand',
+      name: SITE.organization.name,
+    },
+    offers: {
+      '@type': 'Offer',
+      url: d.buyUrl ?? d.gumroadUrl ?? d.url,
+      price: typeof d.price === 'string' ? d.price.replace(/[^0-9.]/g, '') : d.price,
+      priceCurrency: d.priceCurrency ?? 'USD',
+      availability: 'https://schema.org/InStock',
+    },
+  };
+}
+
+function buildBreadcrumbs(d: Record<string, any>) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: (d.items ?? []).map(
+      (item: { name: string; url: string }, i: number) => ({
+        '@type': 'ListItem',
+        position: i + 1,
+        name: item.name,
+        item: absolute(item.url),
+      })
+    ),
+  };
+}
+
+function buildOrganization(d: Record<string, any>) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: d.name ?? SITE.organization.name,
+    url: siteUrl,
+    logo: absolute(d.logo ?? SITE.organization.logo),
+    sameAs: d.sameAs ?? SITE.organization.sameAs,
+    description: d.description ?? SITE.description,
+  };
+}
+
+const builders: Record<SchemaType, (d: Record<string, any>) => object> = {
+  Article: buildArticle,
+  FAQPage: buildFAQ,
+  HowTo: buildHowTo,
+  Product: buildProduct,
+  BreadcrumbList: buildBreadcrumbs,
+  Organization: buildOrganization,
+};
+
+const payload = builders[type](data);
+---
+
+<script
+  type="application/ld+json"
+  set:html={JSON.stringify(payload, null, 0)}
+/>

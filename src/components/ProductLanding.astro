@@ -1,0 +1,329 @@
+---
+import JsonLd from './JsonLd.astro';
+
+interface FAQ {
+  question: string;
+  answer: string;
+}
+
+interface RelatedProduct {
+  title: string;
+  url: string;
+  price: number | string;
+}
+
+interface Props {
+  title: string;
+  /**
+   * Short product description (1-3 sentences). Shown in the hero as plain text.
+   * For long-form markdown body content, use the default <slot /> in the parent page.
+   */
+  description: string;
+  price: number | string;
+  features: string[];
+  whatsIncluded: string[];
+  faqs: FAQ[];
+  buyUrl: string;
+  relatedProducts?: RelatedProduct[];
+  /** Bullet points rendered in the "Who This Is For" section. If empty, section is hidden. */
+  audience?: string[];
+  /** Category label shown above the title (e.g. "Checklist", "Policy Template"). */
+  category?: string;
+  image?: string;
+}
+
+const {
+  title,
+  description,
+  price,
+  features,
+  whatsIncluded,
+  faqs,
+  buyUrl,
+  relatedProducts = [],
+  audience = [],
+  category,
+  image,
+} = Astro.props;
+
+function formatPrice(value: number | string): string {
+  if (typeof value === 'number') {
+    return `$${value.toFixed(value % 1 === 0 ? 0 : 2)}`;
+  }
+  return value;
+}
+
+const priceDisplay = formatPrice(price);
+
+const productSchema = {
+  title,
+  description,
+  price,
+  image,
+  category,
+  buyUrl,
+};
+
+const faqSchema = {
+  questions: faqs.map((f) => ({ question: f.question, answer: f.answer })),
+};
+---
+
+<JsonLd type="Product" data={productSchema} />
+{faqs.length > 0 && <JsonLd type="FAQPage" data={faqSchema} />}
+
+<!-- Hero -->
+<section class="bg-navy-700 text-white border-b-4 border-gold-500">
+  <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-20">
+    <div class="grid gap-8 md:grid-cols-5 md:items-center">
+      <div class="md:col-span-3">
+        {
+          category && (
+            <p class="inline-block text-xs font-semibold uppercase tracking-widest text-gold-300">
+              {category}
+            </p>
+          )
+        }
+        <h1
+          class="mt-3 font-serif text-3xl md:text-4xl lg:text-5xl leading-tight text-white"
+        >
+          {title}
+        </h1>
+        <p class="mt-4 text-lg text-navy-100">{description}</p>
+
+        <div class="mt-8 flex flex-wrap items-center gap-4">
+          <a
+            href={buyUrl}
+            rel="noopener"
+            target="_blank"
+            class="inline-flex items-center justify-center rounded bg-gold-500 px-7 py-3.5 text-lg font-semibold text-navy-900 hover:bg-gold-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gold-400 transition-colors"
+          >
+            Buy Now — {priceDisplay}
+          </a>
+          <span class="text-sm text-navy-200">
+            Instant download · One-time payment
+          </span>
+        </div>
+      </div>
+
+      {
+        image && (
+          <div class="md:col-span-2">
+            <img
+              src={image}
+              alt=""
+              class="w-full rounded-lg border border-navy-600 shadow-lg"
+              loading="eager"
+            />
+          </div>
+        )
+      }
+    </div>
+  </div>
+</section>
+
+<!-- Optional long-form markdown body supplied by the parent page -->
+<div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10 prose-article">
+  <slot />
+</div>
+
+<!-- What's Included -->
+{
+  whatsIncluded.length > 0 && (
+    <section class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      <h2 class="font-serif text-2xl md:text-3xl text-navy-800">
+        What's included
+      </h2>
+      <ul class="mt-6 grid gap-3 sm:grid-cols-2" role="list">
+        {whatsIncluded.map((item) => (
+          <li class="flex items-start gap-3 rounded-lg border border-navy-100 bg-white p-4">
+            <svg
+              class="shrink-0 mt-0.5 h-5 w-5 text-gold-500"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+              aria-hidden="true"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M16.704 5.29a1 1 0 0 1 .006 1.414l-7.07 7.115a1 1 0 0 1-1.42.007L3.29 8.91a1 1 0 1 1 1.42-1.408l4.22 4.257 6.36-6.4a1 1 0 0 1 1.414-.07z"
+                clip-rule="evenodd"
+              />
+            </svg>
+            <span class="text-navy-900">{item}</span>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )
+}
+
+<!-- Who This Is For -->
+{
+  audience.length > 0 && (
+    <section class="bg-navy-50 border-y border-navy-100">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-14">
+        <h2 class="font-serif text-2xl md:text-3xl text-navy-800">
+          Who this is for
+        </h2>
+        <ul class="mt-6 space-y-3" role="list">
+          {audience.map((item) => (
+            <li class="flex items-start gap-3">
+              <span
+                class="shrink-0 mt-1.5 h-2 w-2 rounded-full bg-gold-500"
+                aria-hidden="true"
+              />
+              <span class="text-navy-900">{item}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )
+}
+
+<!-- Features / Benefits -->
+{
+  features.length > 0 && (
+    <section class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-14">
+      <h2 class="font-serif text-2xl md:text-3xl text-navy-800">
+        Why this template works
+      </h2>
+      <ul class="mt-6 grid gap-4 sm:grid-cols-2" role="list">
+        {features.map((feature) => (
+          <li class="flex items-start gap-3">
+            <svg
+              class="shrink-0 mt-0.5 h-5 w-5 text-navy-700"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+              aria-hidden="true"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16zm3.707-9.293a1 1 0 0 0-1.414-1.414L9 10.586 7.707 9.293a1 1 0 0 0-1.414 1.414l2 2a1 1 0 0 0 1.414 0l4-4z"
+                clip-rule="evenodd"
+              />
+            </svg>
+            <span class="text-navy-900">{feature}</span>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )
+}
+
+<!-- Mid-page CTA -->
+<section class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pb-10">
+  <div
+    class="rounded-lg border border-gold-300 bg-gold-50 p-6 md:p-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
+  >
+    <div>
+      <p class="font-serif text-xl md:text-2xl text-navy-800">
+        Ready to save yourself hours of blank-page work?
+      </p>
+      <p class="mt-1 text-navy-700">
+        One-time purchase. Lifetime access to updates.
+      </p>
+    </div>
+    <a
+      href={buyUrl}
+      rel="noopener"
+      target="_blank"
+      class="inline-flex items-center justify-center rounded bg-navy-700 px-6 py-3 font-semibold text-white hover:bg-navy-800 transition-colors whitespace-nowrap"
+    >
+      Get it for {priceDisplay}
+    </a>
+  </div>
+</section>
+
+<!-- FAQ -->
+{
+  faqs.length > 0 && (
+    <section class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-14">
+      <h2 class="font-serif text-2xl md:text-3xl text-navy-800">
+        Frequently asked questions
+      </h2>
+      <div class="mt-6 divide-y divide-navy-100 border border-navy-100 rounded-lg overflow-hidden bg-white">
+        {faqs.map((faq) => (
+          <details class="group">
+            <summary class="flex items-start justify-between gap-4 cursor-pointer px-5 py-4 list-none hover:bg-navy-50 focus:outline-none focus:bg-navy-50">
+              <span class="font-semibold text-navy-800">{faq.question}</span>
+              <svg
+                class="shrink-0 mt-1 h-5 w-5 text-navy-500 transition-transform group-open:rotate-180"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+                aria-hidden="true"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M5.22 7.22a.75.75 0 0 1 1.06 0L10 10.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 8.28a.75.75 0 0 1 0-1.06z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+            </summary>
+            <div class="px-5 pb-5 text-navy-900/85 leading-relaxed">
+              {faq.answer}
+            </div>
+          </details>
+        ))}
+      </div>
+    </section>
+  )
+}
+
+<!-- Related Products -->
+{
+  relatedProducts.length > 0 && (
+    <section class="bg-navy-50 border-t border-navy-100">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <h2 class="font-serif text-2xl md:text-3xl text-navy-800">
+          Related templates
+        </h2>
+        <div class="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {relatedProducts.map((rp) => (
+            <a
+              href={rp.url}
+              class="group block rounded-lg border border-navy-100 bg-white p-5 hover:border-gold-400 hover:shadow-md transition-all"
+            >
+              <h3 class="font-serif text-lg text-navy-800 group-hover:text-gold-700">
+                {rp.title}
+              </h3>
+              <div class="mt-3 flex items-center justify-between">
+                <span class="font-semibold text-navy-700">
+                  {formatPrice(rp.price)}
+                </span>
+                <span class="text-sm font-semibold text-navy-700 group-hover:text-gold-700">
+                  View →
+                </span>
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+<!-- Spacer so sticky mobile bar doesn't cover trailing content -->
+<div class="h-20 md:hidden" aria-hidden="true"></div>
+
+<!-- Sticky mobile CTA bar -->
+<div
+  class="md:hidden fixed bottom-0 inset-x-0 z-30 bg-navy-800 text-white border-t-2 border-gold-500 shadow-[0_-4px_16px_rgba(0,0,0,0.15)]"
+>
+  <div
+    class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between gap-3"
+  >
+    <div class="min-w-0">
+      <p class="text-xs text-navy-200 truncate">{title}</p>
+      <p class="text-lg font-semibold text-gold-300">{priceDisplay}</p>
+    </div>
+    <a
+      href={buyUrl}
+      rel="noopener"
+      target="_blank"
+      class="shrink-0 inline-flex items-center justify-center rounded bg-gold-500 px-5 py-2.5 font-semibold text-navy-900 hover:bg-gold-400"
+    >
+      Buy Now
+    </a>
+  </div>
+</div>

@@ -1,0 +1,131 @@
+---
+import '../styles/global.css';
+import SEO from '../components/SEO.astro';
+import JsonLd from '../components/JsonLd.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { SITE } from '../consts';
+
+interface Props {
+  title: string;
+  description?: string;
+  canonical?: string | URL;
+  image?: string;
+  type?: 'website' | 'article';
+  publishedTime?: Date;
+  modifiedTime?: Date;
+  author?: string;
+  keywords?: string[];
+  noindex?: boolean;
+  /** Render the default Organization JSON-LD on this page. Defaults to true on the home page. */
+  includeOrganization?: boolean;
+}
+
+const {
+  title,
+  description,
+  canonical,
+  image,
+  type,
+  publishedTime,
+  modifiedTime,
+  author,
+  keywords,
+  noindex,
+  includeOrganization = Astro.url.pathname === '/',
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title={`${SITE.name} RSS feed`}
+      href="/rss.xml"
+    />
+    <link
+      rel="sitemap"
+      type="application/xml"
+      href="/sitemap-index.xml"
+    />
+    <SEO
+      title={title}
+      description={description}
+      canonical={canonical}
+      image={image}
+      type={type}
+      publishedTime={publishedTime}
+      modifiedTime={modifiedTime}
+      author={author}
+      keywords={keywords}
+      noindex={noindex}
+    />
+    {
+      includeOrganization && (
+        <JsonLd type="Organization" data={{}} />
+      )
+    }
+    <slot name="head" />
+  </head>
+  <body class="min-h-screen flex flex-col bg-white text-navy-900">
+    <a
+      href="#main"
+      class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:bg-gold-500 focus:text-navy-900 focus:px-3 focus:py-1 focus:rounded"
+    >
+      Skip to content
+    </a>
+    <Header />
+    <main id="main" class="flex-1 w-full">
+      <slot />
+    </main>
+    <Footer />
+
+    <!--
+      Kit newsletter form handler.
+      Picks up any <form data-kit-form> on the page, POSTs to Kit via fetch,
+      and swaps the form for its sibling [data-kit-success] element on success.
+    -->
+    <script is:inline>
+      document.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('form[data-kit-form]').forEach((form) => {
+          form.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const btn = form.querySelector('button[type="submit"]');
+            const originalText = btn ? btn.textContent : '';
+            if (btn) {
+              btn.disabled = true;
+              btn.textContent = 'Submitting…';
+            }
+            try {
+              await fetch(form.action, {
+                method: 'POST',
+                mode: 'no-cors',
+                body: new FormData(form),
+              });
+              const success = form.parentElement?.querySelector(
+                '[data-kit-success]'
+              );
+              form.hidden = true;
+              if (success) success.hidden = false;
+            } catch (err) {
+              if (btn) {
+                btn.disabled = false;
+                btn.textContent = originalText;
+              }
+              const error = form.parentElement?.querySelector(
+                '[data-kit-error]'
+              );
+              if (error) error.hidden = false;
+            }
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,78 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  product: CollectionEntry<'products'>;
+}
+
+const { product } = Astro.props;
+const { title, description, price, category, buyUrl, featured, image } =
+  product.data;
+
+const priceDisplay =
+  typeof price === 'number' ? `$${price.toFixed(price % 1 === 0 ? 0 : 2)}` : price;
+---
+
+<article
+  class:list={[
+    'group flex flex-col h-full rounded-lg border bg-white shadow-sm hover:shadow-md transition-all',
+    featured ? 'border-gold-400 ring-1 ring-gold-200' : 'border-navy-100',
+  ]}
+>
+  {
+    image && (
+      <a
+        href={buyUrl}
+        rel="noopener"
+        target="_blank"
+        class="block overflow-hidden rounded-t-lg"
+      >
+        <img
+          src={image}
+          alt=""
+          loading="lazy"
+          class="w-full h-44 object-cover group-hover:scale-[1.02] transition-transform"
+        />
+      </a>
+    )
+  }
+  <div class="p-5 flex flex-col flex-1">
+    <div class="flex items-center justify-between gap-2">
+      <span
+        class="inline-block text-xs font-semibold uppercase tracking-wide text-gold-700"
+      >
+        {category}
+      </span>
+      {
+        featured && (
+          <span class="inline-block rounded-full bg-gold-100 px-2 py-0.5 text-[11px] font-semibold text-gold-800">
+            Featured
+          </span>
+        )
+      }
+    </div>
+    <h3 class="mt-2 font-serif text-xl text-navy-800 leading-snug">
+      <a
+        href={buyUrl}
+        rel="noopener"
+        target="_blank"
+        class="hover:text-gold-700"
+      >
+        {title}
+      </a>
+    </h3>
+    <p class="mt-2 text-navy-900/75 text-[0.95rem] flex-1">{description}</p>
+    <div class="mt-4 flex items-center justify-between">
+      <span class="font-semibold text-navy-800 text-lg">{priceDisplay}</span>
+      <a
+        href={buyUrl}
+        rel="noopener"
+        target="_blank"
+        class="inline-flex items-center gap-1 rounded bg-navy-700 text-white px-4 py-2 text-sm font-semibold hover:bg-navy-800"
+      >
+        View product
+        <span aria-hidden="true">↗</span>
+      </a>
+    </div>
+  </div>
+</article>

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://fsoshield.pages.dev/sitemap-index.xml

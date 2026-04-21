@@ -1,0 +1,20 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import EmailSignup from '../components/EmailSignup.astro';
+import { SITE } from '../consts';
+---
+
+<BaseLayout
+  title="About"
+  description={`About ${SITE.name} — practical industrial security training and NISPOM compliance resources for Facility Security Officers.`}
+>
+  <section class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <h1 class="font-serif text-4xl md:text-5xl text-navy-800">About</h1>
+    <div class="prose-article mt-6">
+      {/* Add your own About content here. */}
+    </div>
+    <div class="mt-10">
+      <EmailSignup />
+    </div>
+  </section>
+</BaseLayout>

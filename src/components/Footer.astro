@@ -1,0 +1,49 @@
+---
+import { SITE } from '../consts';
+import EmailSignup from './EmailSignup.astro';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="mt-16 bg-navy-800 text-navy-100">
+  <div
+    class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 grid gap-10 md:grid-cols-3"
+  >
+    <div>
+      <h3 class="font-serif text-lg text-white">{SITE.name}</h3>
+      <p class="mt-2 text-sm text-navy-200">{SITE.description}</p>
+    </div>
+
+    <nav aria-label="Footer">
+      <h3 class="font-serif text-lg text-white">Site</h3>
+      <ul class="mt-2 space-y-1 text-sm">
+        <li><a class="hover:text-gold-300" href="/about">About</a></li>
+        <li><a class="hover:text-gold-300" href="/contact">Contact</a></li>
+        <li><a class="hover:text-gold-300" href="/templates">Templates</a></li>
+        <li><a class="hover:text-gold-300" href="/rss.xml">RSS feed</a></li>
+        <li><a class="hover:text-gold-300" href="/privacy">Privacy Policy</a></li>
+        <li><a class="hover:text-gold-300" href="/terms">Terms</a></li>
+      </ul>
+    </nav>
+
+    <div>
+      <EmailSignup
+        compact
+        heading="Newsletter"
+        description="One short email per week with NISPOM and CMMC updates for FSOs."
+      />
+    </div>
+  </div>
+
+  <div class="border-t border-navy-700">
+    <div
+      class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row justify-between items-center gap-2 text-xs text-navy-300"
+    >
+      <p>&copy; {year} {SITE.name}. All rights reserved.</p>
+      <p>
+        Information on this site is for general educational purposes and is
+        not legal advice.
+      </p>
+    </div>
+  </div>
+</footer>

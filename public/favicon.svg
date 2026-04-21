@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <rect width="64" height="64" rx="8" fill="#1a365d"/>
+  <path d="M32 10 L52 18 V34 C52 44 43 52 32 56 C21 52 12 44 12 34 V18 Z" fill="#d69e2e"/>
+  <text x="32" y="38" font-family="Georgia,serif" font-size="20" font-weight="700" fill="#1a365d" text-anchor="middle">FSO</text>
+</svg>

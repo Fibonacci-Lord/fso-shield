@@ -1,0 +1,41 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Search"
+  description="Search articles, guides, and templates."
+>
+  <Fragment slot="head">
+    <link href="/pagefind/pagefind-ui.css" rel="stylesheet" />
+    <script src="/pagefind/pagefind-ui.js" defer is:inline></script>
+  </Fragment>
+
+  <section class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <h1 class="font-serif text-4xl md:text-5xl text-navy-800">Search</h1>
+    <p class="mt-3 text-navy-700">
+      Find articles, guides, and templates across the site.
+    </p>
+
+    <div id="search" class="mt-6"></div>
+
+    <script is:inline>
+      window.addEventListener('DOMContentLoaded', () => {
+        const init = () => {
+          if (typeof window.PagefindUI !== 'undefined') {
+            new window.PagefindUI({
+              element: '#search',
+              showSubResults: true,
+              showImages: false,
+              resetStyles: false,
+              translations: { placeholder: 'Search…' },
+            });
+          } else {
+            setTimeout(init, 100);
+          }
+        };
+        init();
+      });
+    </script>
+  </section>
+</BaseLayout>

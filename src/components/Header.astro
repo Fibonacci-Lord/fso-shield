@@ -1,0 +1,137 @@
+---
+import { SITE, NAV_LINKS } from '../consts';
+
+const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
+
+function isActive(href: string) {
+  if (href === '/') return currentPath === '/';
+  return currentPath === href || currentPath.startsWith(`${href}/`);
+}
+---
+
+<header
+  class="sticky top-0 z-40 w-full bg-navy-700 text-white shadow-md border-b-4 border-gold-500"
+>
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16">
+      <a
+        href="/"
+        class="flex items-center gap-2 font-serif text-lg md:text-xl font-bold text-white hover:text-gold-300 transition-colors"
+      >
+        <svg
+          width="28"
+          height="28"
+          viewBox="0 0 64 64"
+          aria-hidden="true"
+          class="shrink-0"
+        >
+          <path
+            d="M32 6 L56 16 V34 C56 46 45 55 32 60 C19 55 8 46 8 34 V16 Z"
+            fill="#d69e2e"
+          />
+          <text
+            x="32"
+            y="40"
+            font-family="Georgia,serif"
+            font-size="20"
+            font-weight="700"
+            fill="#1a365d"
+            text-anchor="middle">FSO</text
+          >
+        </svg>
+        <span>{SITE.shortName}</span>
+      </a>
+
+      <nav
+        aria-label="Primary"
+        class="hidden md:flex items-center gap-1 text-sm font-medium"
+      >
+        {
+          NAV_LINKS.map((link) => (
+            <a
+              href={link.href}
+              class:list={[
+                'px-3 py-2 rounded transition-colors',
+                isActive(link.href)
+                  ? 'bg-navy-800 text-gold-300'
+                  : 'text-white hover:bg-navy-800 hover:text-gold-300',
+              ]}
+              aria-current={isActive(link.href) ? 'page' : undefined}
+            >
+              {link.label}
+            </a>
+          ))
+        }
+        <a
+          href="/search"
+          class="ml-2 px-3 py-2 rounded border border-gold-500 text-gold-300 hover:bg-gold-500 hover:text-navy-900 transition-colors"
+          aria-label="Search"
+        >
+          Search
+        </a>
+      </nav>
+
+      <button
+        id="mobile-menu-toggle"
+        type="button"
+        class="md:hidden inline-flex items-center justify-center rounded p-2 text-white hover:bg-navy-800"
+        aria-controls="mobile-menu"
+        aria-expanded="false"
+      >
+        <span class="sr-only">Open menu</span>
+        <svg
+          class="h-6 w-6"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="2"
+          stroke="currentColor"
+          aria-hidden="true"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+      </button>
+    </div>
+
+    <nav
+      id="mobile-menu"
+      aria-label="Mobile"
+      class="md:hidden hidden pb-3 space-y-1"
+    >
+      {
+        NAV_LINKS.map((link) => (
+          <a
+            href={link.href}
+            class:list={[
+              'block px-3 py-2 rounded text-sm font-medium',
+              isActive(link.href)
+                ? 'bg-navy-800 text-gold-300'
+                : 'text-white hover:bg-navy-800 hover:text-gold-300',
+            ]}
+            aria-current={isActive(link.href) ? 'page' : undefined}
+          >
+            {link.label}
+          </a>
+        ))
+      }
+      <a
+        href="/search"
+        class="block px-3 py-2 rounded text-sm font-medium border border-gold-500 text-gold-300 hover:bg-gold-500 hover:text-navy-900"
+      >
+        Search
+      </a>
+    </nav>
+  </div>
+</header>
+
+<script>
+  const toggle = document.getElementById('mobile-menu-toggle');
+  const menu = document.getElementById('mobile-menu');
+  toggle?.addEventListener('click', () => {
+    const open = menu?.classList.toggle('hidden') === false;
+    toggle.setAttribute('aria-expanded', String(open));
+  });
+</script>

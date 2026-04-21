@@ -1,0 +1,137 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import BaseLayout from './BaseLayout.astro';
+import JsonLd from '../components/JsonLd.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import EmailSignup from '../components/EmailSignup.astro';
+import { CATEGORY_META } from '../content.config';
+import { getArticleUrl } from '../utils/urls';
+
+interface Props {
+  post: CollectionEntry<'blog'>;
+}
+
+const { post } = Astro.props;
+const {
+  title,
+  description,
+  pubDate,
+  updatedDate,
+  author,
+  keywords,
+  category,
+  featuredImage,
+  schema,
+} = post.data;
+
+const cat = CATEGORY_META[category];
+const url = getArticleUrl(post);
+
+const breadcrumbItems = [
+  { name: 'Home', url: '/' },
+  { name: cat.label, url: cat.path },
+  { name: title, url, current: true },
+];
+
+const articleData = {
+  title,
+  description,
+  pubDate,
+  updatedDate,
+  author,
+  keywords,
+  image: featuredImage,
+  url,
+};
+
+// Optional FAQ/HowTo JSON-LD can be extended by reading from frontmatter
+// on a per-post basis in the future. For now we render Article + Breadcrumbs
+// by default and swap the primary schema if frontmatter declares `howto` / `faq`.
+const primaryType: 'Article' | 'FAQPage' | 'HowTo' =
+  schema === 'faq' ? 'FAQPage' : schema === 'howto' ? 'HowTo' : 'Article';
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  image={featuredImage}
+  type="article"
+  publishedTime={pubDate}
+  modifiedTime={updatedDate}
+  author={author}
+  keywords={keywords}
+>
+  <JsonLd type={primaryType} data={articleData} />
+  <JsonLd type="BreadcrumbList" data={{ items: breadcrumbItems }} />
+
+  <article class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <Breadcrumbs items={breadcrumbItems} />
+
+    <header class="mt-4 mb-8">
+      <a
+        href={cat.path}
+        class="inline-block text-xs font-semibold uppercase tracking-wide text-gold-700 hover:text-gold-600"
+      >
+        {cat.label}
+      </a>
+      <h1 class="mt-2 font-serif text-3xl md:text-4xl lg:text-5xl text-navy-800 leading-tight">
+        {title}
+      </h1>
+      <p class="mt-3 text-lg text-navy-700/90">{description}</p>
+      <div class="mt-4 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-navy-600">
+        <span>By {author}</span>
+        <span aria-hidden="true">•</span>
+        <time datetime={pubDate.toISOString()}>
+          Published {pubDate.toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+          })}
+        </time>
+        {
+          updatedDate && (
+            <>
+              <span aria-hidden="true">•</span>
+              <time datetime={updatedDate.toISOString()}>
+                Updated{' '}
+                {updatedDate.toLocaleDateString('en-US', {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric',
+                })}
+              </time>
+            </>
+          )
+        }
+      </div>
+    </header>
+
+    {
+      featuredImage && (
+        <img
+          src={featuredImage}
+          alt=""
+          class="w-full rounded-lg border border-navy-100 mb-8"
+        />
+      )
+    }
+
+    <div class="prose-article" data-pagefind-body>
+      <slot />
+    </div>
+
+    <hr class="my-10 border-navy-100" />
+
+    <EmailSignup />
+
+    <p class="mt-6 text-sm text-navy-600">
+      <a href={cat.path} class="hover:text-gold-700">
+        ← More in {cat.label}
+      </a>
+    </p>
+  </article>
+
+  <Fragment slot="head">
+    <meta name="pagefind-ignore" content="false" />
+  </Fragment>
+</BaseLayout>
