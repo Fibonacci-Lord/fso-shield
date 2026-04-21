@@ -3,7 +3,7 @@ import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
-  site: 'https://fsoshield.pages.dev',
+  site: 'https://fso-shield.pages.dev',
   trailingSlash: 'ignore',
   integrations: [sitemap()],
   vite: {
