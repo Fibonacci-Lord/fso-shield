@@ -8,12 +8,17 @@ import { SITE } from '../consts';
   title="About"
   description={`About ${SITE.name} — practical industrial security training and NISPOM compliance resources for Facility Security Officers.`}
 >
-  <section class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-    <h1 class="font-serif text-4xl md:text-5xl text-navy-800">About</h1>
-    <div class="prose-article mt-6">
+  <section class="max-w-3xl mx-auto px-6 sm:px-8 lg:px-12 py-16 md:py-20">
+    <p class="eyebrow text-gold-700">About</p>
+    <h1
+      class="mt-3 font-serif text-5xl md:text-6xl text-navy-900 leading-[1.05] tracking-[-0.025em]"
+    >
+      About {SITE.name}.
+    </h1>
+    <div class="prose-article mt-10">
       {/* Add your own About content here. */}
     </div>
-    <div class="mt-10">
+    <div class="mt-14">
       <EmailSignup />
     </div>
   </section>

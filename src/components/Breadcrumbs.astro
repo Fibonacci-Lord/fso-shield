@@ -7,27 +7,49 @@ interface Crumb {
 
 interface Props {
   items: Crumb[];
+  /**
+   * "dark"  — dark text on light bg (article pages)
+   * "light" — light text on dark hero (pillar, category, templates, etc.)
+   */
+  tone?: 'dark' | 'light';
 }
 
-const { items } = Astro.props;
+const { items, tone = 'dark' } = Astro.props;
+
+const cls = {
+  root:
+    tone === 'light'
+      ? 'text-sm text-navy-200/80'
+      : 'text-sm text-navy-700',
+  current:
+    tone === 'light'
+      ? 'text-white font-medium'
+      : 'text-navy-900 font-medium',
+  link:
+    tone === 'light'
+      ? 'hover:text-gold-300 transition-colors'
+      : 'hover:text-gold-700 transition-colors',
+  sep:
+    tone === 'light' ? 'text-navy-400/60' : 'text-navy-300',
+};
 ---
 
-<nav aria-label="Breadcrumb" class="text-sm text-navy-600">
-  <ol class="flex flex-wrap items-center gap-1">
+<nav aria-label="Breadcrumb" class={cls.root}>
+  <ol class="flex flex-wrap items-center gap-1.5">
     {
       items.map((c, i) => (
-        <li class="flex items-center gap-1">
+        <li class="flex items-center gap-1.5">
           {c.current ? (
-            <span aria-current="page" class="text-navy-800 font-medium">
+            <span aria-current="page" class={cls.current}>
               {c.name}
             </span>
           ) : (
-            <a href={c.url} class="hover:text-gold-700">
+            <a href={c.url} class={cls.link}>
               {c.name}
             </a>
           )}
           {i < items.length - 1 && (
-            <span aria-hidden="true" class="text-navy-300">
+            <span aria-hidden="true" class={cls.sep}>
               /
             </span>
           )}

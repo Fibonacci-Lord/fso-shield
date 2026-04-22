@@ -1,48 +1,122 @@
 ---
 import { SITE } from '../consts';
-import EmailSignup from './EmailSignup.astro';
+import { CATEGORY_META, categorySlugs } from '../content.config';
 
 const year = new Date().getFullYear();
 ---
 
-<footer class="mt-16 bg-navy-800 text-navy-100">
+<footer
+  class="mt-24 bg-navy-900 text-navy-100 border-t-2 border-gold-500"
+>
   <div
-    class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 grid gap-10 md:grid-cols-3"
+    class="max-w-6xl mx-auto px-6 sm:px-8 lg:px-12 py-16 grid gap-12 md:grid-cols-[1.25fr_1fr_1fr]"
   >
+    <!-- Brand column -->
     <div>
-      <h3 class="font-serif text-lg text-white">{SITE.name}</h3>
-      <p class="mt-2 text-sm text-navy-200">{SITE.description}</p>
+      <a
+        href="/"
+        class="inline-flex items-center gap-3 font-serif text-2xl text-white hover:text-gold-300 transition-colors"
+      >
+        <svg
+          width="36"
+          height="36"
+          viewBox="0 0 64 64"
+          aria-hidden="true"
+          class="shrink-0"
+        >
+          <path
+            d="M32 6 L56 16 V34 C56 46 45 55 32 60 C19 55 8 46 8 34 V16 Z"
+            fill="#D69E2E"
+          />
+          <text
+            x="32"
+            y="40"
+            font-family="Georgia,serif"
+            font-size="20"
+            font-weight="700"
+            fill="#0F1D32"
+            text-anchor="middle">FSO</text
+          >
+        </svg>
+        <span>{SITE.name}</span>
+      </a>
+      <p class="mt-4 text-sm leading-relaxed text-navy-200/90 max-w-sm">
+        {SITE.description}
+      </p>
     </div>
 
-    <nav aria-label="Footer">
-      <h3 class="font-serif text-lg text-white">Site</h3>
-      <ul class="mt-2 space-y-1 text-sm">
-        <li><a class="hover:text-gold-300" href="/about">About</a></li>
-        <li><a class="hover:text-gold-300" href="/contact">Contact</a></li>
-        <li><a class="hover:text-gold-300" href="/templates">Templates</a></li>
-        <li><a class="hover:text-gold-300" href="/rss.xml">RSS feed</a></li>
-        <li><a class="hover:text-gold-300" href="/privacy">Privacy Policy</a></li>
-        <li><a class="hover:text-gold-300" href="/terms">Terms</a></li>
+    <!-- Site navigation -->
+    <nav aria-label="Footer site navigation">
+      <h3 class="eyebrow text-gold-300">Site</h3>
+      <ul class="mt-4 space-y-2 text-sm">
+        <li>
+          <a class="hover:text-gold-300 transition-colors" href="/about">
+            About
+          </a>
+        </li>
+        <li>
+          <a class="hover:text-gold-300 transition-colors" href="/contact">
+            Contact
+          </a>
+        </li>
+        <li>
+          <a class="hover:text-gold-300 transition-colors" href="/templates">
+            Templates
+          </a>
+        </li>
+        <li>
+          <a class="hover:text-gold-300 transition-colors" href="/newsletter">
+            Newsletter
+          </a>
+        </li>
+        <li>
+          <a class="hover:text-gold-300 transition-colors" href="/rss.xml">
+            RSS feed
+          </a>
+        </li>
+        <li>
+          <a class="hover:text-gold-300 transition-colors" href="/privacy">
+            Privacy Policy
+          </a>
+        </li>
+        <li>
+          <a class="hover:text-gold-300 transition-colors" href="/terms">
+            Terms
+          </a>
+        </li>
       </ul>
     </nav>
 
-    <div>
-      <EmailSignup
-        compact
-        heading="Newsletter"
-        description="One short email per week with NISPOM and CMMC updates for FSOs."
-      />
-    </div>
+    <!-- Topics -->
+    <nav aria-label="Footer topics">
+      <h3 class="eyebrow text-gold-300">Topics</h3>
+      <ul class="mt-4 space-y-2 text-sm">
+        {
+          categorySlugs.map((slug) => {
+            const cat = CATEGORY_META[slug];
+            return (
+              <li>
+                <a
+                  class="hover:text-gold-300 transition-colors"
+                  href={cat.path}
+                >
+                  {cat.label}
+                </a>
+              </li>
+            );
+          })
+        }
+      </ul>
+    </nav>
   </div>
 
-  <div class="border-t border-navy-700">
+  <div class="border-t border-navy-800/80">
     <div
-      class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row justify-between items-center gap-2 text-xs text-navy-300"
+      class="max-w-6xl mx-auto px-6 sm:px-8 lg:px-12 py-5 flex flex-col sm:flex-row justify-between items-center gap-2 text-xs text-navy-300/80"
     >
       <p>&copy; {year} {SITE.name}. All rights reserved.</p>
       <p>
-        Information on this site is for general educational purposes and is
-        not legal advice.
+        For general educational purposes. Not legal advice.
       </p>
     </div>
   </div>

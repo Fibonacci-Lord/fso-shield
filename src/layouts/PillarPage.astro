@@ -4,6 +4,7 @@ import BaseLayout from './BaseLayout.astro';
 import JsonLd from '../components/JsonLd.astro';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
 import ArticleCard from '../components/ArticleCard.astro';
+import ScrollReveal from '../components/ScrollReveal.astro';
 import EmailSignup from '../components/EmailSignup.astro';
 import { CATEGORY_META, type Category } from '../content.config';
 
@@ -18,9 +19,11 @@ const meta = CATEGORY_META[category];
 const title = Astro.props.title ?? meta.label;
 const description = Astro.props.description ?? meta.description;
 
-const allPosts = await getCollection('blog', (entry: CollectionEntry<'blog'>) => {
-  return entry.data.category === category && !entry.data.draft;
-});
+const allPosts = await getCollection(
+  'blog',
+  (entry: CollectionEntry<'blog'>) =>
+    entry.data.category === category && !entry.data.draft
+);
 
 const posts = allPosts.sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
@@ -35,42 +38,66 @@ const breadcrumbItems = [
 <BaseLayout title={title} description={description} keywords={[meta.label]}>
   <JsonLd type="BreadcrumbList" data={{ items: breadcrumbItems }} />
 
-  <section class="bg-navy-700 text-white border-b-4 border-gold-500">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
-      <Breadcrumbs items={breadcrumbItems} />
-      <h1 class="mt-3 font-serif text-4xl md:text-5xl text-white leading-tight">
-        {title}
-      </h1>
-      <p class="mt-4 text-lg text-navy-100 max-w-2xl">{description}</p>
+  <section
+    class="hero-ink relative overflow-hidden border-b-4 border-gold-500"
+  >
+    <div class="hero-grid absolute inset-0 opacity-40" aria-hidden="true"></div>
+    <div
+      class="relative max-w-4xl mx-auto px-6 sm:px-8 lg:px-12 py-16 md:py-24"
+    >
+      <Breadcrumbs items={breadcrumbItems} tone="light" />
+      <ScrollReveal>
+        <p class="eyebrow mt-5 text-gold-300">{meta.label}</p>
+      </ScrollReveal>
+      <ScrollReveal delay={80}>
+        <h1
+          class="mt-3 font-serif text-white leading-[1.05] tracking-[-0.025em]
+                 text-[2.75rem] sm:text-[3.25rem] md:text-[4rem]
+                 max-w-[20ch]"
+        >
+          {title}
+        </h1>
+      </ScrollReveal>
+      <ScrollReveal delay={160}>
+        <p
+          class="mt-5 text-lg md:text-xl text-navy-100 max-w-2xl leading-relaxed"
+        >
+          {description}
+        </p>
+      </ScrollReveal>
     </div>
   </section>
 
-  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-    <div class="prose-article max-w-3xl">
+  <div class="max-w-6xl mx-auto px-6 sm:px-8 lg:px-12 py-16">
+    <div class="prose-article">
       <slot />
     </div>
 
-    <section class="mt-12">
-      <h2 class="font-serif text-2xl md:text-3xl text-navy-800">
-        Articles in {meta.label}
-      </h2>
+    <section class="mt-16">
+      <ScrollReveal>
+        <h2 class="font-serif text-3xl md:text-4xl text-navy-900">
+          Articles in {meta.label}.
+        </h2>
+      </ScrollReveal>
       {
         posts.length === 0 ? (
-          <p class="mt-3 text-navy-600">
+          <p class="mt-4 text-navy-700">
             New articles in this category will appear here as they're
             published.
           </p>
         ) : (
-          <div class="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {posts.map((post) => (
-              <ArticleCard post={post} />
+          <div class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {posts.map((post, i) => (
+              <ScrollReveal delay={i * 80}>
+                <ArticleCard post={post} />
+              </ScrollReveal>
             ))}
           </div>
         )
       }
     </section>
 
-    <section class="mt-14">
+    <section class="mt-16">
       <EmailSignup />
     </section>
   </div>

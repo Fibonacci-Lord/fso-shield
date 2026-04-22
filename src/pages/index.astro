@@ -4,6 +4,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import ArticleCard from '../components/ArticleCard.astro';
 import ProductCard from '../components/ProductCard.astro';
 import EmailSignup from '../components/EmailSignup.astro';
+import ScrollReveal from '../components/ScrollReveal.astro';
 import { CATEGORY_META, categorySlugs } from '../content.config';
 import { SITE } from '../consts';
 
@@ -17,125 +18,198 @@ const featuredProducts = (await getCollection('products'))
 ---
 
 <BaseLayout title={SITE.name} description={SITE.description}>
-  <section class="bg-navy-700 text-white border-b-4 border-gold-500">
+  <!-- ============================================================
+       Hero — deep ink with faint grid texture and editorial serif
+       ============================================================ -->
+  <section
+    class="hero-ink relative overflow-hidden border-b-4 border-gold-500"
+  >
+    <div class="hero-grid absolute inset-0 opacity-40" aria-hidden="true"></div>
+
     <div
-      class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-20 text-center"
+      class="relative max-w-5xl mx-auto px-6 sm:px-8 lg:px-12 py-20 md:py-28"
     >
-      <p
-        class="inline-block text-xs font-semibold uppercase tracking-widest text-gold-300"
-      >
-        For Facility Security Officers
-      </p>
-      <h1 class="mt-3 font-serif text-4xl md:text-5xl lg:text-6xl text-white leading-tight">
-        Practical industrial security training, in plain English.
-      </h1>
-      <p class="mt-5 text-lg md:text-xl text-navy-100 max-w-2xl mx-auto">
-        {SITE.description}
-      </p>
-      <div class="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
-        <a
-          href="/fso-training"
-          class="inline-flex items-center justify-center rounded bg-gold-500 px-6 py-3 font-semibold text-navy-900 hover:bg-gold-400"
-          >Start with FSO Training</a
+      <ScrollReveal>
+        <p class="eyebrow text-gold-300">For Facility Security Officers</p>
+      </ScrollReveal>
+
+      <ScrollReveal delay={100}>
+        <h1
+          class="mt-5 font-serif text-white leading-[1.02] tracking-[-0.025em]
+                 text-[3rem] sm:text-[3.75rem] md:text-[4.5rem] lg:text-[5rem]
+                 max-w-[18ch]"
         >
-        <a
-          href="/templates"
-          class="inline-flex items-center justify-center rounded border border-gold-400 px-6 py-3 font-semibold text-gold-300 hover:bg-navy-800"
-          >Browse Templates</a
-        >
-      </div>
+          Practical industrial security training, in plain English.
+        </h1>
+      </ScrollReveal>
+
+      <ScrollReveal delay={200}>
+        <p class="mt-6 text-lg md:text-xl text-navy-100 max-w-2xl leading-relaxed">
+          {SITE.description}
+        </p>
+      </ScrollReveal>
+
+      <ScrollReveal delay={300}>
+        <div class="mt-10 flex flex-col sm:flex-row gap-3">
+          <a
+            href="/fso-training"
+            class="inline-flex items-center justify-center rounded-md bg-gold-500
+                   px-7 py-3.5 font-semibold text-navy-950 hover:bg-gold-400
+                   focus:outline-none focus:ring-2 focus:ring-offset-2
+                   focus:ring-gold-400 focus:ring-offset-navy-950
+                   transition-colors"
+          >
+            Start with FSO Training
+          </a>
+          <a
+            href="/templates"
+            class="inline-flex items-center justify-center rounded-md
+                   border border-gold-400/70 bg-transparent px-7 py-3.5
+                   font-semibold text-gold-300 hover:bg-navy-900
+                   hover:border-gold-400 transition-colors"
+          >
+            Browse Templates
+          </a>
+        </div>
+      </ScrollReveal>
+
+      <ScrollReveal delay={450}>
+        <p class="eyebrow mt-12 text-navy-300/80">
+          Built for FSOs managing cleared programs under 32&nbsp;CFR Part 117
+        </p>
+      </ScrollReveal>
     </div>
   </section>
 
+  <!-- ============================================================
+       Core topics — five pillar cards
+       ============================================================ -->
   <section
-    class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12"
+    class="max-w-6xl mx-auto px-6 sm:px-8 lg:px-12 py-20"
     aria-labelledby="topics-heading"
   >
-    <h2 id="topics-heading" class="font-serif text-2xl md:text-3xl text-navy-800">
-      Core topics
-    </h2>
-    <div class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+    <ScrollReveal>
+      <h2
+        id="topics-heading"
+        class="font-serif text-3xl md:text-4xl text-navy-900 max-w-[20ch]"
+      >
+        Core topics for working FSOs.
+      </h2>
+    </ScrollReveal>
+
+    <div class="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
       {
-        categorySlugs.map((slug) => {
+        categorySlugs.map((slug, i) => {
           const cat = CATEGORY_META[slug];
           return (
-            <a
-              href={cat.path}
-              class="block rounded-lg border border-navy-100 bg-white p-6 hover:border-gold-400 hover:shadow-md transition-all"
-            >
-              <h3 class="font-serif text-xl text-navy-800">{cat.label}</h3>
-              <p class="mt-2 text-navy-900/75 text-[0.95rem]">
-                {cat.description}
-              </p>
-              <span class="mt-3 inline-block text-sm font-semibold text-navy-700">
-                Explore →
-              </span>
-            </a>
+            <ScrollReveal delay={i * 80}>
+              <a
+                href={cat.path}
+                class="card group relative flex h-full flex-col rounded-lg
+                       border-t-2 border-transparent p-6
+                       hover:border-t-gold-500"
+              >
+                <h3 class="font-serif text-xl text-navy-900">{cat.label}</h3>
+                <p class="mt-2 text-navy-800/80 text-[0.95rem] leading-relaxed flex-1">
+                  {cat.description}
+                </p>
+                <span class="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-navy-800 group-hover:text-gold-700 transition-colors">
+                  Explore
+                  <span
+                    class="transition-transform group-hover:translate-x-0.5"
+                    aria-hidden="true"
+                  >
+                    →
+                  </span>
+                </span>
+              </a>
+            </ScrollReveal>
           );
         })
       }
     </div>
   </section>
 
+  <!-- ============================================================
+       Latest articles
+       ============================================================ -->
   <section
-    class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12"
+    class="max-w-6xl mx-auto px-6 sm:px-8 lg:px-12 py-20"
     aria-labelledby="latest-heading"
   >
-    <div class="flex items-end justify-between gap-4 flex-wrap">
-      <h2 id="latest-heading" class="font-serif text-2xl md:text-3xl text-navy-800">
-        Latest articles
-      </h2>
-      <a
-        href="/rss.xml"
-        class="text-sm font-semibold text-navy-700 hover:text-gold-700"
-        >RSS feed</a
-      >
-    </div>
+    <ScrollReveal>
+      <div class="flex items-end justify-between gap-4 flex-wrap">
+        <h2
+          id="latest-heading"
+          class="font-serif text-3xl md:text-4xl text-navy-900"
+        >
+          Latest articles.
+        </h2>
+        <a
+          href="/rss.xml"
+          class="text-sm font-semibold text-navy-700 hover:text-gold-700 transition-colors"
+        >
+          RSS feed →
+        </a>
+      </div>
+    </ScrollReveal>
+
     {
       posts.length === 0 ? (
-        <p class="mt-4 text-navy-600">
+        <p class="mt-6 text-navy-700">
           New articles will appear here as they're published.
         </p>
       ) : (
-        <div class="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {posts.map((post) => (
-            <ArticleCard post={post} />
+        <div class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {posts.map((post, i) => (
+            <ScrollReveal delay={i * 80}>
+              <ArticleCard post={post} />
+            </ScrollReveal>
           ))}
         </div>
       )
     }
   </section>
 
+  <!-- ============================================================
+       Featured templates
+       ============================================================ -->
   {
     featuredProducts.length > 0 && (
       <section
-        class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12"
+        class="max-w-6xl mx-auto px-6 sm:px-8 lg:px-12 py-20"
         aria-labelledby="featured-products"
       >
-        <div class="flex items-end justify-between gap-4 flex-wrap">
-          <h2
-            id="featured-products"
-            class="font-serif text-2xl md:text-3xl text-navy-800"
-          >
-            Featured templates
-          </h2>
-          <a
-            href="/templates"
-            class="text-sm font-semibold text-navy-700 hover:text-gold-700"
-          >
-            View all →
-          </a>
-        </div>
-        <div class="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {featuredProducts.map((product) => (
-            <ProductCard product={product} />
+        <ScrollReveal>
+          <div class="flex items-end justify-between gap-4 flex-wrap">
+            <h2
+              id="featured-products"
+              class="font-serif text-3xl md:text-4xl text-navy-900"
+            >
+              Featured templates.
+            </h2>
+            <a
+              href="/templates"
+              class="text-sm font-semibold text-navy-700 hover:text-gold-700 transition-colors"
+            >
+              View all →
+            </a>
+          </div>
+        </ScrollReveal>
+
+        <div class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          {featuredProducts.map((product, i) => (
+            <ScrollReveal delay={i * 80}>
+              <ProductCard product={product} />
+            </ScrollReveal>
           ))}
         </div>
       </section>
     )
   }
 
-  <section class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-    <EmailSignup />
-  </section>
+  <!-- ============================================================
+       Newsletter — full-bleed dark band
+       ============================================================ -->
+  <EmailSignup variant="band" />
 </BaseLayout>

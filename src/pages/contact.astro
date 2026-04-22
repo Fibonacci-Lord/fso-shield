@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
 import JsonLd from '../components/JsonLd.astro';
+import ScrollReveal from '../components/ScrollReveal.astro';
 
 // Replace with your real Formspree endpoint.
 // Get yours at https://formspree.io/ — format: https://formspree.io/f/xxxxxxxx
@@ -39,9 +40,9 @@ const breadcrumbItems = [
 ];
 
 const inputClass =
-  'mt-1 block w-full rounded border border-navy-300 bg-white px-4 py-2.5 text-navy-900 placeholder:text-navy-400 focus:outline-none focus:ring-2 focus:ring-gold-500 focus:border-gold-500';
-const labelClass = 'block text-sm font-semibold text-navy-800';
-const helpClass = 'mt-1 text-xs text-navy-600';
+  'mt-1 block w-full rounded-md border border-navy-200 bg-white px-4 py-2.5 text-navy-900 placeholder:text-navy-400 focus:outline-none focus:ring-2 focus:ring-gold-500 focus:border-gold-500';
+const labelClass = 'block text-sm font-semibold text-navy-900';
+const helpClass = 'mt-1 text-xs text-navy-700';
 ---
 
 <BaseLayout
@@ -50,25 +51,42 @@ const helpClass = 'mt-1 text-xs text-navy-600';
 >
   <JsonLd type="BreadcrumbList" data={{ items: breadcrumbItems }} />
 
-  <section class="bg-navy-700 text-white border-b-4 border-gold-500">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
-      <Breadcrumbs items={breadcrumbItems} />
-      <h1 class="mt-3 font-serif text-4xl md:text-5xl text-white leading-tight">
-        Contact
-      </h1>
-      <p class="mt-4 text-lg text-navy-100 max-w-2xl">
-        Need help with NISPOM compliance, CMMC certification, or facility
-        clearance? Tell us about your situation and we'll connect you with the
-        right expert.
-      </p>
+  <section
+    class="hero-ink relative overflow-hidden border-b-4 border-gold-500"
+  >
+    <div class="hero-grid absolute inset-0 opacity-40" aria-hidden="true"></div>
+    <div
+      class="relative max-w-4xl mx-auto px-6 sm:px-8 lg:px-12 py-16 md:py-24"
+    >
+      <Breadcrumbs items={breadcrumbItems} tone="light" />
+      <ScrollReveal>
+        <p class="eyebrow mt-5 text-gold-300">Get in touch</p>
+      </ScrollReveal>
+      <ScrollReveal delay={80}>
+        <h1
+          class="mt-3 font-serif text-white leading-[1.05] tracking-[-0.025em]
+                 text-[2.75rem] sm:text-[3.25rem] md:text-[4rem] max-w-[14ch]"
+        >
+          Contact.
+        </h1>
+      </ScrollReveal>
+      <ScrollReveal delay={160}>
+        <p
+          class="mt-5 text-lg md:text-xl text-navy-100 max-w-2xl leading-relaxed"
+        >
+          Need help with NISPOM compliance, CMMC certification, or facility
+          clearance? Tell us about your situation and we'll connect you with
+          the right expert.
+        </p>
+      </ScrollReveal>
     </div>
   </section>
 
-  <section class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+  <section class="max-w-3xl mx-auto px-6 sm:px-8 lg:px-12 py-16">
     <form
       action={FORMSPREE_ENDPOINT}
       method="POST"
-      class="rounded-lg border border-navy-100 bg-white shadow-sm p-6 md:p-8 space-y-6"
+      class="card rounded-lg p-6 md:p-8 space-y-6"
       novalidate
     >
       <input type="hidden" name="_subject" value="New lead — FSO Training Hub" />
@@ -229,14 +247,16 @@ const helpClass = 'mt-1 text-xs text-navy-600';
           class={inputClass}></textarea>
       </div>
 
-      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pt-2">
-        <p class="text-xs text-navy-600">
+      <div
+        class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pt-2"
+      >
+        <p class="text-xs text-navy-700">
           Your information is used only to respond to this inquiry and is
           never sold.
         </p>
         <button
           type="submit"
-          class="inline-flex items-center justify-center rounded bg-gold-500 px-6 py-3 font-semibold text-navy-900 hover:bg-gold-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gold-500 transition-colors"
+          class="inline-flex items-center justify-center rounded-md bg-gold-500 px-6 py-3 font-semibold text-navy-950 hover:bg-gold-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gold-500 transition-colors"
         >
           Send inquiry
         </button>
