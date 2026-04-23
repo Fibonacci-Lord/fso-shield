@@ -3,7 +3,7 @@ export const SITE = {
   shortName: 'FSO Shield',
   description:
     'Templates, checklists, and training that survive DCSA scrutiny. Practical NISPOM compliance resources for Facility Security Officers at cleared defense contractors.',
-  url: 'https://fso-shield.pages.dev',
+  url: 'https://fsoshield.com',
   author: 'Jean Baptiste',
   defaultOgImage: '/og-default.png',
   twitterHandle: '',
