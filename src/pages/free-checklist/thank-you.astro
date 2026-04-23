@@ -1,0 +1,199 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import ScrollReveal from '../../components/ScrollReveal.astro';
+
+const breadcrumbItems = [
+  { name: 'Home', url: '/' },
+  { name: 'Free checklist', url: '/free-checklist' },
+  { name: 'Thank you', url: '/free-checklist/thank-you', current: true },
+];
+
+const pdfUrl = '/downloads/NISPOM-Quick-Check-15.pdf';
+const fullChecklistUrl =
+  'https://fsoshield.lemonsqueezy.com/checkout/buy/efb06b45-4466-42b3-b416-8508f160e140';
+
+const nextSteps = [
+  {
+    title: 'Confirm your email',
+    body: 'Click the link in the email we just sent so you keep receiving FSO Shield resources.',
+  },
+  {
+    title: 'Run it before your next assessment',
+    body: 'Walk each of the 15 items with your program and document evidence as you go.',
+  },
+  {
+    title: 'Fix gaps before DCSA arrives',
+    body: 'Every item maps to a NISPOM reference so corrective actions are easy to scope.',
+  },
+];
+---
+
+<BaseLayout
+  title="Your NISPOM Quick-Check is on the way"
+  description="Your free 15-item NISPOM self-inspection checklist is downloading. Check your inbox to confirm your subscription."
+  noindex={true}
+>
+  <!-- Trigger the PDF download 2s after load so the page paints first. -->
+  <meta slot="head" http-equiv="refresh" content={`2; url=${pdfUrl}`} />
+
+  <!-- ============================================================
+       Hero — confirmation + manual download fallback
+       ============================================================ -->
+  <section class="hero-ink relative overflow-hidden border-b-4 border-gold-500">
+    <div class="hero-grid absolute inset-0 opacity-40" aria-hidden="true"></div>
+
+    <div
+      class="relative max-w-4xl mx-auto px-6 sm:px-8 lg:px-12 py-16 md:py-24"
+    >
+      <Breadcrumbs items={breadcrumbItems} tone="light" />
+
+      <ScrollReveal>
+        <p class="eyebrow mt-6 text-gold-300">Your download is starting</p>
+      </ScrollReveal>
+
+      <ScrollReveal delay={80}>
+        <h1
+          class="mt-4 font-serif text-white leading-[1.03] tracking-[-0.025em]
+                 text-[2.75rem] sm:text-[3.5rem] md:text-[4.25rem] max-w-[20ch]"
+        >
+          Your NISPOM Quick-Check is downloading.
+        </h1>
+      </ScrollReveal>
+
+      <ScrollReveal delay={160}>
+        <p class="mt-6 text-lg md:text-xl text-navy-100 max-w-2xl leading-relaxed">
+          If the download doesn't start in a couple of seconds, grab it
+          directly below. We also emailed a copy — check your inbox to
+          confirm your subscription so you keep getting FSO Shield
+          resources.
+        </p>
+      </ScrollReveal>
+
+      <ScrollReveal delay={240}>
+        <div class="mt-8 flex flex-wrap items-center gap-3">
+          <a
+            href={pdfUrl}
+            download
+            class="inline-flex items-center gap-2 rounded-md bg-gold-500 px-6 py-3 font-semibold text-navy-950 hover:bg-gold-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-navy-950 focus:ring-gold-400 transition-colors"
+          >
+            Download the checklist
+            <span aria-hidden="true">↓</span>
+          </a>
+          <a
+            href="/"
+            class="inline-flex items-center gap-1 text-navy-100 hover:text-white underline underline-offset-4"
+          >
+            Back to home
+          </a>
+        </div>
+      </ScrollReveal>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       What's next — 3-step onboarding
+       ============================================================ -->
+  <section
+    class="max-w-5xl mx-auto px-6 sm:px-8 lg:px-12 py-20"
+    aria-labelledby="next-steps-heading"
+  >
+    <ScrollReveal>
+      <p class="eyebrow text-gold-700">What's next</p>
+      <h2
+        id="next-steps-heading"
+        class="mt-3 font-serif text-3xl md:text-4xl text-navy-900 leading-tight max-w-2xl"
+      >
+        Three quick steps to close your biggest NISPOM gaps.
+      </h2>
+    </ScrollReveal>
+
+    <ol class="mt-10 grid gap-6 md:grid-cols-3" role="list">
+      {
+        nextSteps.map((step, i) => (
+          <ScrollReveal delay={i * 100}>
+            <li class="h-full rounded-md border border-navy-200 bg-bone p-6">
+              <p class="eyebrow text-navy-700">Step {i + 1}</p>
+              <h3 class="mt-2 font-serif text-xl text-navy-900 leading-snug">
+                {step.title}
+              </h3>
+              <p class="mt-3 text-navy-800/85 leading-relaxed">{step.body}</p>
+            </li>
+          </ScrollReveal>
+        ))
+      }
+    </ol>
+  </section>
+
+  <!-- ============================================================
+       Upsell — the $27 full 77-item checklist
+       ============================================================ -->
+  <section
+    class="bg-navy-100/70 border-y border-navy-200"
+    aria-labelledby="upsell-heading"
+  >
+    <div class="max-w-5xl mx-auto px-6 sm:px-8 lg:px-12 py-16 md:py-20">
+      <ScrollReveal>
+        <p class="eyebrow text-gold-700">Want the complete picture?</p>
+        <h2
+          id="upsell-heading"
+          class="mt-3 font-serif text-3xl md:text-4xl text-navy-900 leading-tight max-w-2xl"
+        >
+          Upgrade to the full 77-item NISPOM Self-Inspection Checklist.
+        </h2>
+        <p class="mt-4 text-navy-800/85 leading-relaxed max-w-2xl">
+          The free version covers the 15 most-cited findings. The complete
+          checklist walks every NISPOM section under 32 CFR Part 117 — with
+          assessor annotations, a findings summary table, and a corrective
+          action tracker.
+        </p>
+      </ScrollReveal>
+
+      <ScrollReveal delay={120}>
+        <div
+          class="mt-10 grid gap-8 md:grid-cols-2 rounded-lg card-featured card p-6 md:p-10"
+        >
+          <div>
+            <p class="eyebrow text-navy-700">You just got</p>
+            <p class="mt-2 font-serif text-2xl text-navy-900">
+              15 items · free
+            </p>
+            <ul
+              class="mt-4 space-y-2 text-navy-800/85 text-[0.95rem] leading-relaxed"
+              role="list"
+            >
+              <li>The most commonly cited findings</li>
+              <li>Checkboxes and NISPOM references</li>
+              <li>"What the assessor looks for" notes</li>
+            </ul>
+          </div>
+
+          <div class="md:border-l md:border-navy-200 md:pl-8">
+            <p class="eyebrow text-gold-700">The complete checklist</p>
+            <p class="mt-2 font-serif text-2xl text-navy-900">
+              77 items · 9 sections · $27
+            </p>
+            <ul
+              class="mt-4 space-y-2 text-navy-800/85 text-[0.95rem] leading-relaxed"
+              role="list"
+            >
+              <li>All 9 NISPOM sections under 32 CFR Part 117</li>
+              <li>Findings summary table and corrective-action tracker</li>
+              <li>Inspector certification page</li>
+              <li>Detailed assessor annotations per item</li>
+              <li>Instant download, lifetime updates</li>
+            </ul>
+
+            <a
+              href={fullChecklistUrl}
+              class="mt-6 inline-flex items-center gap-1 rounded-md bg-navy-900 text-white px-5 py-2.5 font-semibold hover:bg-navy-950 transition-colors"
+            >
+              Get the complete checklist
+              <span aria-hidden="true">→</span>
+            </a>
+          </div>
+        </div>
+      </ScrollReveal>
+    </div>
+  </section>
+</BaseLayout>
