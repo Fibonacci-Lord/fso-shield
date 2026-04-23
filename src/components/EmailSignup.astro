@@ -14,6 +14,16 @@ interface Props {
   /** Legacy alias — maps to variant="compact" when true. */
   compact?: boolean;
   variant?: Variant;
+  /** Button label. Defaults to "Subscribe". */
+  buttonLabel?: string;
+  /** Input placeholder. */
+  placeholder?: string;
+  /** Success message shown after the form submits successfully. */
+  successMessage?: string;
+  /** Footnote shown below the form. */
+  footnote?: string;
+  /** Hidden form input for tagging / source tracking in Kit. */
+  source?: string;
 }
 
 const {
@@ -21,6 +31,11 @@ const {
   description,
   compact = false,
   variant = compact ? 'compact' : 'card',
+  buttonLabel = 'Subscribe',
+  placeholder,
+  successMessage,
+  footnote = 'No spam. Unsubscribe any time.',
+  source,
 } = Astro.props;
 
 const resolvedHeading =
@@ -83,14 +98,17 @@ const emailId = `newsletter-email-${uid}`;
                 name="email_address"
                 required
                 autocomplete="email"
-                placeholder="you@company.com"
+                placeholder={placeholder ?? 'you@company.com'}
                 class="w-full rounded-md border border-white/20 bg-white/5 px-4 py-3 text-white placeholder:text-navy-200/70 focus:outline-none focus:ring-2 focus:ring-gold-400 focus:border-gold-400"
               />
+              {source && (
+                <input type="hidden" name="fields[source]" value={source} />
+              )}
               <button
                 type="submit"
                 class="w-full rounded-md bg-gold-500 px-5 py-3 font-semibold text-navy-950 hover:bg-gold-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-navy-950 focus:ring-gold-400 transition-colors"
               >
-                Subscribe
+                {buttonLabel}
               </button>
             </form>
 
@@ -99,8 +117,14 @@ const emailId = `newsletter-email-${uid}`;
               hidden
               class="mt-4 rounded-md border border-gold-400/40 bg-gold-500/10 px-4 py-3 text-gold-100"
             >
-              <strong class="text-white">Thanks!</strong> Check your email to
-              confirm your subscription.
+              {successMessage ? (
+                <span set:html={successMessage} />
+              ) : (
+                <>
+                  <strong class="text-white">Thanks!</strong> Check your email
+                  to confirm your subscription.
+                </>
+              )}
             </div>
             <div
               data-kit-error
@@ -110,9 +134,7 @@ const emailId = `newsletter-email-${uid}`;
               Something went wrong. Please try again.
             </div>
 
-            <p class="mt-3 text-xs text-navy-300/80">
-              No spam. Unsubscribe any time.
-            </p>
+            <p class="mt-3 text-xs text-navy-300/80">{footnote}</p>
           </div>
         </div>
       </div>
@@ -156,14 +178,17 @@ const emailId = `newsletter-email-${uid}`;
           name="email_address"
           required
           autocomplete="email"
-          placeholder="you@example.com"
+          placeholder={placeholder ?? 'you@example.com'}
           class="w-full rounded-md border border-navy-200 bg-white px-4 py-2.5 text-navy-900 placeholder:text-navy-400 focus:outline-none focus:ring-2 focus:ring-gold-500 focus:border-gold-500"
         />
+        {source && (
+          <input type="hidden" name="fields[source]" value={source} />
+        )}
         <button
           type="submit"
           class="w-full rounded-md bg-gold-500 px-5 py-2.5 font-semibold text-navy-950 hover:bg-gold-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gold-500 transition-colors"
         >
-          Subscribe
+          {buttonLabel}
         </button>
       </form>
 
@@ -172,7 +197,14 @@ const emailId = `newsletter-email-${uid}`;
         hidden
         class="mt-4 rounded-md border border-gold-300 bg-gold-100/70 px-4 py-3 text-navy-900"
       >
-        <strong>Thanks!</strong> Check your email to confirm your subscription.
+        {successMessage ? (
+          <span set:html={successMessage} />
+        ) : (
+          <>
+            <strong>Thanks!</strong> Check your email to confirm your
+            subscription.
+          </>
+        )}
       </div>
       <div
         data-kit-error
@@ -182,9 +214,7 @@ const emailId = `newsletter-email-${uid}`;
         Something went wrong. Please try again.
       </div>
 
-      <p class="mt-3 text-xs text-navy-700/70">
-        No spam. Unsubscribe any time.
-      </p>
+      <p class="mt-3 text-xs text-navy-700/70">{footnote}</p>
     </section>
   )
 }

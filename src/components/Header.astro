@@ -63,11 +63,33 @@ function isActive(href: string) {
           ))
         }
         <a
+          href="/free-checklist"
+          class:list={[
+            'ml-2 px-3 py-2 rounded-md border font-semibold transition-colors',
+            isActive('/free-checklist')
+              ? 'bg-gold-500 text-navy-950 border-gold-500'
+              : 'border-gold-500/70 text-gold-300 hover:bg-gold-500 hover:text-navy-950 hover:border-gold-500',
+          ]}
+          aria-current={isActive('/free-checklist') ? 'page' : undefined}
+        >
+          Free Checklist
+        </a>
+        <a
           href="/search"
-          class="ml-2 px-3 py-2 rounded-md border border-gold-500/70 text-gold-300 hover:bg-gold-500 hover:text-navy-950 hover:border-gold-500 transition-colors"
+          class="px-3 py-2 rounded-md text-white/90 hover:text-gold-300 transition-colors"
           aria-label="Search"
         >
-          Search
+          <svg
+            class="h-5 w-5"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            aria-hidden="true"
+          >
+            <circle cx="11" cy="11" r="7" />
+            <path stroke-linecap="round" d="m20 20-3.5-3.5" />
+          </svg>
         </a>
       </nav>
 
@@ -118,8 +140,20 @@ function isActive(href: string) {
         ))
       }
       <a
+        href="/free-checklist"
+        class:list={[
+          'block px-3 py-2 rounded-md text-sm font-semibold border',
+          isActive('/free-checklist')
+            ? 'bg-gold-500 text-navy-950 border-gold-500'
+            : 'border-gold-500/70 text-gold-300 hover:bg-gold-500 hover:text-navy-950',
+        ]}
+        aria-current={isActive('/free-checklist') ? 'page' : undefined}
+      >
+        Free Checklist
+      </a>
+      <a
         href="/search"
-        class="block px-3 py-2 rounded-md text-sm font-medium border border-gold-500/70 text-gold-300 hover:bg-gold-500 hover:text-navy-950"
+        class="block px-3 py-2 rounded-md text-sm font-medium text-white/90 hover:bg-navy-800 hover:text-gold-300"
       >
         Search
       </a>
