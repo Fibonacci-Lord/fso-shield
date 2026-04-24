@@ -2,7 +2,13 @@
   "permissions": {
     "allow": [
       "Bash(gws --version)",
-      "Bash(gws sheets:*)"
+      "Bash(gws sheets:*)",
+      "Bash(npm run *)",
+      "Bash(lsof -ti:4323)",
+      "Bash(xargs kill *)",
+      "Bash(lsof -ti:4321)",
+      "Bash(lsof -ti:4322)",
+      "mcp__Claude_Preview__preview_start"
     ]
   }
 }
