@@ -5,6 +5,7 @@ import JsonLd from '../components/JsonLd.astro';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
 import EmailSignup from '../components/EmailSignup.astro';
 import LeadMagnetCTA from '../components/LeadMagnetCTA.astro';
+import CmmcCTA from '../components/CmmcCTA.astro';
 import { CATEGORY_META } from '../content.config';
 import { getArticleUrl } from '../utils/urls';
 
@@ -128,7 +129,7 @@ const readingMinutes = Math.max(1, Math.round(description.length / 5 / 220));
 
     <hr class="mt-14 mb-10 border-navy-100" />
 
-    <LeadMagnetCTA />
+    {category === 'cmmc' ? <CmmcCTA /> : <LeadMagnetCTA />}
 
     <div class="mt-8">
       <EmailSignup />

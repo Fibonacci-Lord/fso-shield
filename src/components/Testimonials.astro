@@ -1,0 +1,48 @@
+---
+import { testimonials } from '../data/testimonials';
+
+interface Props {
+  heading?: string;
+  eyebrow?: string;
+}
+
+const {
+  heading = 'What FSOs are saying.',
+  eyebrow = 'Proof',
+} = Astro.props;
+
+const list = testimonials;
+---
+
+{
+  list.length > 0 && (
+    <section
+      class="max-w-5xl mx-auto px-6 sm:px-8 lg:px-12 py-16 md:py-20"
+      aria-label="Testimonials"
+    >
+      <p class="eyebrow text-gold-700">{eyebrow}</p>
+      <h2
+        class="mt-3 font-serif text-3xl md:text-4xl text-navy-900 leading-tight max-w-2xl"
+      >
+        {heading}
+      </h2>
+
+      <div class="mt-10 grid gap-6 md:grid-cols-2">
+        {list.map((t) => (
+          <figure class="rounded-lg border border-navy-200 border-l-4 border-l-gold-500 bg-bone p-6 md:p-7">
+            <blockquote class="font-serif text-xl md:text-[1.35rem] text-navy-900 italic leading-snug">
+              &ldquo;{t.quote}&rdquo;
+            </blockquote>
+            <figcaption class="mt-5 text-sm">
+              <span class="font-semibold text-navy-900">{t.name}</span>
+              <span class="eyebrow text-navy-700 ml-2">
+                {t.title}
+                {t.company ? ` · ${t.company}` : ''}
+              </span>
+            </figcaption>
+          </figure>
+        ))}
+      </div>
+    </section>
+  )
+}

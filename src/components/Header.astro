@@ -47,20 +47,35 @@ function isActive(href: string) {
         class="hidden md:flex items-center gap-1 text-sm font-medium"
       >
         {
-          NAV_LINKS.map((link) => (
-            <a
-              href={link.href}
-              class:list={[
-                'px-3 py-2 rounded-md transition-colors',
-                isActive(link.href)
-                  ? 'bg-navy-800 text-gold-300'
-                  : 'text-white hover:bg-navy-800 hover:text-gold-300',
-              ]}
-              aria-current={isActive(link.href) ? 'page' : undefined}
-            >
-              {link.label}
-            </a>
-          ))
+          NAV_LINKS.map((link) =>
+            link.accent ? (
+              <a
+                href={link.href}
+                class:list={[
+                  'mx-0.5 px-3 py-2 rounded-md border font-semibold transition-colors',
+                  isActive(link.href)
+                    ? 'bg-gold-500 text-navy-950 border-gold-500'
+                    : 'border-gold-500/70 text-gold-300 hover:bg-gold-500 hover:text-navy-950 hover:border-gold-500',
+                ]}
+                aria-current={isActive(link.href) ? 'page' : undefined}
+              >
+                {link.label}
+              </a>
+            ) : (
+              <a
+                href={link.href}
+                class:list={[
+                  'px-3 py-2 rounded-md transition-colors',
+                  isActive(link.href)
+                    ? 'bg-navy-800 text-gold-300'
+                    : 'text-white hover:bg-navy-800 hover:text-gold-300',
+                ]}
+                aria-current={isActive(link.href) ? 'page' : undefined}
+              >
+                {link.label}
+              </a>
+            )
+          )
         }
         <a
           href="/free-checklist"
@@ -124,20 +139,35 @@ function isActive(href: string) {
       class="md:hidden hidden pb-3 space-y-1"
     >
       {
-        NAV_LINKS.map((link) => (
-          <a
-            href={link.href}
-            class:list={[
-              'block px-3 py-2 rounded-md text-sm font-medium',
-              isActive(link.href)
-                ? 'bg-navy-800 text-gold-300'
-                : 'text-white hover:bg-navy-800 hover:text-gold-300',
-            ]}
-            aria-current={isActive(link.href) ? 'page' : undefined}
-          >
-            {link.label}
-          </a>
-        ))
+        NAV_LINKS.map((link) =>
+          link.accent ? (
+            <a
+              href={link.href}
+              class:list={[
+                'block px-3 py-2 rounded-md text-sm font-semibold border',
+                isActive(link.href)
+                  ? 'bg-gold-500 text-navy-950 border-gold-500'
+                  : 'border-gold-500/70 text-gold-300 hover:bg-gold-500 hover:text-navy-950',
+              ]}
+              aria-current={isActive(link.href) ? 'page' : undefined}
+            >
+              {link.label}
+            </a>
+          ) : (
+            <a
+              href={link.href}
+              class:list={[
+                'block px-3 py-2 rounded-md text-sm font-medium',
+                isActive(link.href)
+                  ? 'bg-navy-800 text-gold-300'
+                  : 'text-white hover:bg-navy-800 hover:text-gold-300',
+              ]}
+              aria-current={isActive(link.href) ? 'page' : undefined}
+            >
+              {link.label}
+            </a>
+          )
+        )
       }
       <a
         href="/free-checklist"

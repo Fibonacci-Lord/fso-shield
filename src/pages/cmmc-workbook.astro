@@ -1,0 +1,599 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import JsonLd from '../components/JsonLd.astro';
+import ScrollReveal from '../components/ScrollReveal.astro';
+import Testimonials from '../components/Testimonials.astro';
+
+const products = await getCollection('products');
+const workbook = products.find((p) => p.id === 'cmmc-level-2-workbook');
+
+const WORKBOOK_URL = workbook?.data.buyUrl ?? '#';
+const WORKBOOK_PRICE = 147;
+
+const breadcrumbItems = [
+  { name: 'Home', url: '/' },
+  { name: 'CMMC Workbook', url: '/cmmc-workbook', current: true },
+];
+
+const insideFeatures = [
+  {
+    title: '110 controls, fully documented',
+    body: 'Every NIST SP 800-171 Rev 2 control with the full requirement text, organized by 14 control families. No hunting through government PDFs.',
+    icon: 'doc',
+  },
+  {
+    title: 'Evidence guidance per control',
+    body: 'Each control lists specific evidence to collect — what the assessor will ask for, in plain English. Not just "access control policy" but "GPO exports, user privilege matrices, MFA enrollment records."',
+    icon: 'check',
+  },
+  {
+    title: 'Assessor insights',
+    body: 'Teal-bordered callout at the top of every control family with practical advice on what assessors actually look for — and where most organizations fail.',
+    icon: 'eye',
+  },
+  {
+    title: 'Common findings',
+    body: 'Red-flagged list of the most cited deficiencies per family — so you can fix them before the assessor finds them.',
+    icon: 'alert',
+  },
+  {
+    title: 'Quick wins',
+    body: 'A concrete, one-action item per family that addresses multiple controls at once. "Do this first" guidance that saves weeks of planning.',
+    icon: 'lightning',
+  },
+  {
+    title: 'SPRS score calculator',
+    body: 'Scoring summary table with all 14 families, space to tally implementations, and an SPRS worksheet. Know your score before you submit it.',
+    icon: 'calc',
+  },
+  {
+    title: 'Evidence collection checklist',
+    body: '32-item master checklist covering policies, technical evidence, and administrative records. Check them off as you gather them.',
+    icon: 'check',
+  },
+  {
+    title: 'POA&M tracker',
+    body: '15-row Plan of Action & Milestones table for documenting gaps, remediation plans, responsible parties, and target dates. Required for any control not fully implemented.',
+    icon: 'list',
+  },
+  {
+    title: 'Assessment certification page',
+    body: 'Formal sign-off page for the assessor — name, title, organization, SPRS score, and signature block.',
+    icon: 'stamp',
+  },
+  {
+    title: 'Notes & writing space',
+    body: 'Lined notes section after every control family for additional observations, and expanded notes fields on every control for evidence references.',
+    icon: 'doc',
+  },
+];
+
+const whoForItems = [
+  'Small DoD contractors (under 200 employees) who need to self-assess for CMMC Level 2 but can\u2019t afford a $50K consultant.',
+  'IT managers at cleared contractors who\u2019ve been handed CMMC compliance as an "additional duty."',
+  'FSOs expanding into CMMC who already manage the NISPOM side and now need to demonstrate cybersecurity compliance.',
+  'CMMC consultants who need a professional, structured workbook to deliver to their clients.',
+];
+
+const comparisonRows = [
+  { label: 'All 110 controls documented', free: true, workbook: true, consultant: true },
+  { label: 'Evidence guidance per control', free: false, workbook: true, consultant: true },
+  { label: 'Assessor insights & common findings', free: false, workbook: true, consultant: true },
+  { label: 'Quick wins per family', free: false, workbook: true, consultant: 'sometimes' },
+  { label: 'SPRS score calculator', free: false, workbook: true, consultant: true },
+  { label: 'POA&M tracker', free: false, workbook: true, consultant: true },
+  { label: 'Evidence collection checklist', free: false, workbook: true, consultant: true },
+  { label: 'Fully editable (your facility)', free: 'partially', workbook: true, consultant: true },
+  { label: 'Ready in 5 minutes', free: false, workbook: true, consultant: false },
+];
+
+const faqItems = [
+  {
+    question: 'Is this aligned to the current CMMC 2.0 framework?',
+    answer:
+      'Yes. This workbook covers all 110 controls from NIST SP 800-171 Rev 2, which is the basis for CMMC Level 2 certification as of 2026.',
+  },
+  {
+    question: 'What\u2019s the difference between CMMC Level 1 and Level 2?',
+    answer:
+      'Level 1 covers 15 basic safeguarding controls from FAR 52.204-21 (self-assessment only). Level 2 covers all 110 NIST SP 800-171 controls and may require a C3PAO assessment depending on the contract.',
+  },
+  {
+    question: 'Can I use this to prepare for a C3PAO assessment?',
+    answer:
+      'Yes — the workbook is structured the way assessors review controls. Use it to self-assess first, identify and close gaps, then present your completed workbook and collected evidence to the C3PAO.',
+  },
+  {
+    question: 'What if I\u2019m only handling CUI in email and file shares?',
+    answer:
+      'You still need to implement all 110 controls within your CUI boundary. This workbook helps you define that boundary and assess each control within it.',
+  },
+  {
+    question: 'Do I need this if I already have an SSP?',
+    answer:
+      'Your SSP describes how controls are implemented. This workbook helps you verify they\u2019re actually implemented correctly and identifies gaps your SSP may not cover. They\u2019re complementary documents.',
+  },
+  {
+    question: 'What format is the workbook?',
+    answer:
+      'Microsoft Word (.docx) — fully editable in Microsoft Office, Google Docs, or LibreOffice. Print-ready at US Letter size.',
+  },
+  {
+    question: 'Do you offer refunds?',
+    answer: 'Yes — 30-day money-back guarantee.',
+  },
+];
+
+const productSchema = {
+  title: 'CMMC Level 2 Self-Assessment Workbook',
+  description:
+    'All 110 NIST SP 800-171 Rev 2 controls with evidence guidance, assessor insights, common findings, SPRS score calculator, evidence collection checklist, POA&M tracker, and assessment certification page.',
+  category: 'Workbook',
+  buyUrl: WORKBOOK_URL,
+  price: WORKBOOK_PRICE,
+  image: '/og-default.png',
+};
+---
+
+<BaseLayout
+  title="CMMC Level 2 Self-Assessment Workbook — $147"
+  description="The complete self-assessment workbook for CMMC Level 2. All 110 NIST SP 800-171 controls, evidence guidance, assessor insights, SPRS score calculator, and POA&M tracker. Instant download."
+>
+  <JsonLd type="BreadcrumbList" data={{ items: breadcrumbItems }} />
+  <JsonLd type="Product" data={productSchema} />
+  <JsonLd type="FAQPage" data={{ questions: faqItems }} />
+
+  <!-- ============================================================
+       Hero — CMMC teal accent, but still on navy-ink for continuity
+       ============================================================ -->
+  <section
+    class="hero-ink relative overflow-hidden border-b-4 border-teal-500"
+  >
+    <div class="hero-grid absolute inset-0 opacity-40" aria-hidden="true"></div>
+
+    <div
+      class="relative max-w-5xl mx-auto px-6 sm:px-8 lg:px-12 py-16 md:py-24"
+    >
+      <Breadcrumbs items={breadcrumbItems} tone="light" />
+
+      <ScrollReveal>
+        <p class="mt-6 eyebrow text-teal-300">CMMC Level 2</p>
+      </ScrollReveal>
+
+      <ScrollReveal delay={80}>
+        <h1
+          class="mt-4 font-serif text-white leading-[1.03] tracking-[-0.025em]
+                 text-[2.75rem] sm:text-[3.5rem] md:text-[4.25rem] lg:text-[4.75rem]
+                 max-w-[22ch]"
+        >
+          Stop guessing which controls you've met.
+        </h1>
+      </ScrollReveal>
+
+      <ScrollReveal delay={160}>
+        <p class="mt-6 text-lg md:text-xl text-navy-100 max-w-2xl leading-relaxed">
+          The complete self-assessment workbook for CMMC Level 2 — all 110
+          NIST SP 800-171 controls, evidence checklists, assessor insights,
+          and a POA&amp;M tracker. Know your SPRS score before you submit it.
+        </p>
+      </ScrollReveal>
+
+      <ScrollReveal delay={240}>
+        <div class="mt-10 flex items-baseline gap-3">
+          <span class="font-serif text-5xl md:text-6xl text-white">
+            ${WORKBOOK_PRICE}
+          </span>
+          <span class="text-navy-300 text-sm">
+            Instant download · .docx
+          </span>
+        </div>
+      </ScrollReveal>
+
+      <ScrollReveal delay={320}>
+        <div class="mt-8 flex flex-col sm:flex-row gap-3">
+          <a
+            href={WORKBOOK_URL}
+            rel="noopener"
+            class="inline-flex items-center justify-center rounded-md bg-teal-500
+                   px-8 py-4 font-semibold text-navy-950 hover:bg-teal-400
+                   focus:outline-none focus:ring-2 focus:ring-offset-2
+                   focus:ring-teal-400 focus:ring-offset-navy-950
+                   transition-colors text-lg"
+          >
+            Get the Workbook →
+          </a>
+          <a
+            href="#whats-inside"
+            class="inline-flex items-center justify-center rounded-md
+                   border border-teal-400/70 bg-transparent px-8 py-4
+                   font-semibold text-teal-200 hover:bg-navy-900
+                   hover:border-teal-400 transition-colors text-lg"
+          >
+            See what's inside ↓
+          </a>
+        </div>
+      </ScrollReveal>
+
+      <ScrollReveal delay={400}>
+        <p class="eyebrow mt-10 text-navy-300/80">
+          Used by FSOs and IT managers at cleared DoD contractors
+        </p>
+      </ScrollReveal>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       The CMMC problem — fear driver
+       ============================================================ -->
+  <section
+    class="max-w-3xl mx-auto px-6 sm:px-8 lg:px-12 py-20"
+    aria-labelledby="problem-heading"
+  >
+    <ScrollReveal>
+      <p class="eyebrow text-teal-700">The CMMC problem</p>
+      <h2
+        id="problem-heading"
+        class="mt-3 font-serif text-3xl md:text-4xl text-navy-900 leading-tight"
+      >
+        80,000 contractors. One deadline. Most aren't ready.
+      </h2>
+    </ScrollReveal>
+
+    <div class="mt-8 space-y-5 text-navy-900 text-lg leading-relaxed">
+      <ScrollReveal delay={100}>
+        <p>
+          CMMC Level 2 requires implementation of all 110 NIST SP 800-171 Rev 2
+          security controls. Every DoD contractor handling CUI must either
+          self-assess or pass a C3PAO assessment — and submit their SPRS score
+          to the DoD.
+        </p>
+      </ScrollReveal>
+      <ScrollReveal delay={160}>
+        <p>
+          Most small-to-mid contractors are staring at a 200-page NIST
+          document and a spreadsheet someone emailed them in 2019. They don't
+          know which controls they've implemented, which ones have gaps, or
+          what evidence a C3PAO assessor will actually ask for.
+        </p>
+      </ScrollReveal>
+      <ScrollReveal delay={220}>
+        <p>
+          The penalty for non-compliance isn't a finding — it's losing your
+          contracts. Prime contractors are already flowing CMMC requirements
+          down to subs. If you can't demonstrate compliance, you're off the
+          bid list.
+        </p>
+      </ScrollReveal>
+      <ScrollReveal delay={280}>
+        <p>
+          This workbook replaces the guesswork with a structured,
+          control-by-control walkthrough that tells you exactly what to
+          assess, what evidence to collect, and what to do about the gaps.
+        </p>
+      </ScrollReveal>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       What's inside — feature grid
+       ============================================================ -->
+  <section
+    id="whats-inside"
+    class="bg-teal-50/60 border-y border-teal-200/60"
+    aria-labelledby="whats-inside-heading"
+  >
+    <div class="max-w-6xl mx-auto px-6 sm:px-8 lg:px-12 py-20">
+      <ScrollReveal>
+        <p class="eyebrow text-teal-700">Inside the workbook</p>
+        <h2
+          id="whats-inside-heading"
+          class="mt-3 font-serif text-3xl md:text-4xl text-navy-900 leading-tight max-w-3xl"
+        >
+          Every control. Every piece of evidence. Every gap, documented.
+        </h2>
+      </ScrollReveal>
+
+      <div class="mt-12 grid gap-6 md:grid-cols-2">
+        {
+          insideFeatures.map((f, i) => (
+            <ScrollReveal delay={i * 50}>
+              <article class="h-full rounded-lg border border-teal-200 bg-white p-6 md:p-7 shadow-card">
+                <div class="flex items-start gap-4">
+                  <div
+                    class="shrink-0 flex h-11 w-11 items-center justify-center rounded-md bg-teal-700 text-teal-100"
+                    aria-hidden="true"
+                  >
+                    <svg
+                      class="h-5 w-5"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.75"
+                    >
+                      {f.icon === 'doc' && (
+                        <>
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-5z" />
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M14 3v5h5" />
+                        </>
+                      )}
+                      {f.icon === 'check' && (
+                        <>
+                          <rect x="4" y="3" width="16" height="18" rx="2" />
+                          <path stroke-linecap="round" stroke-linejoin="round" d="m7.5 8.5 1.5 1.5 3-3M7.5 13.5l1.5 1.5 3-3" />
+                        </>
+                      )}
+                      {f.icon === 'eye' && (
+                        <>
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z" />
+                          <circle cx="12" cy="12" r="3" />
+                        </>
+                      )}
+                      {f.icon === 'alert' && (
+                        <>
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M12 3 2 20h20L12 3z" />
+                          <path stroke-linecap="round" d="M12 10v4M12 17h.01" />
+                        </>
+                      )}
+                      {f.icon === 'lightning' && (
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M13 2 4 14h7l-1 8 9-12h-7z" />
+                      )}
+                      {f.icon === 'calc' && (
+                        <>
+                          <rect x="5" y="3" width="14" height="18" rx="2" />
+                          <path stroke-linecap="round" d="M9 7h6M9 11h1M13 11h2M9 14h1M13 14h2M9 17h1M13 17h2" />
+                        </>
+                      )}
+                      {f.icon === 'list' && (
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h10M4 18h16" />
+                      )}
+                      {f.icon === 'stamp' && (
+                        <>
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M8 14h8a2 2 0 0 1 2 2v3H6v-3a2 2 0 0 1 2-2z" />
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M10 14V9a2 2 0 1 1 4 0v5" />
+                        </>
+                      )}
+                    </svg>
+                  </div>
+
+                  <div class="flex-1 min-w-0">
+                    <h3 class="font-serif text-xl text-navy-900 leading-snug">
+                      {f.title}
+                    </h3>
+                    <p class="mt-2 text-[0.95rem] text-navy-800/85 leading-relaxed">
+                      {f.body}
+                    </p>
+                  </div>
+                </div>
+              </article>
+            </ScrollReveal>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       Who this is for
+       ============================================================ -->
+  <section
+    class="max-w-5xl mx-auto px-6 sm:px-8 lg:px-12 py-20"
+    aria-labelledby="who-for-heading"
+  >
+    <ScrollReveal>
+      <p class="eyebrow text-teal-700">Who this is for</p>
+      <h2
+        id="who-for-heading"
+        class="mt-3 font-serif text-3xl md:text-4xl text-navy-900 leading-tight max-w-2xl"
+      >
+        Built for the teams who don't have a $50K consultant budget.
+      </h2>
+    </ScrollReveal>
+
+    <ul class="mt-10 grid gap-4 md:grid-cols-2" role="list">
+      {
+        whoForItems.map((item, i) => (
+          <ScrollReveal delay={i * 70}>
+            <li class="flex items-start gap-3 rounded-md border border-teal-200 bg-teal-50/40 p-5">
+              <svg
+                class="shrink-0 mt-0.5 h-5 w-5 text-teal-600"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+                aria-hidden="true"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M16.704 5.29a1 1 0 0 1 .006 1.414l-7.07 7.115a1 1 0 0 1-1.42.007L3.29 8.91a1 1 0 1 1 1.42-1.408l4.22 4.257 6.36-6.4a1 1 0 0 1 1.414-.07z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+              <span class="text-navy-900 leading-relaxed">{item}</span>
+            </li>
+          </ScrollReveal>
+        ))
+      }
+    </ul>
+  </section>
+
+  <!-- ============================================================
+       How it compares
+       ============================================================ -->
+  <section
+    class="bg-navy-100/70 border-y border-navy-200"
+    aria-labelledby="compare-heading"
+  >
+    <div class="max-w-5xl mx-auto px-6 sm:px-8 lg:px-12 py-20">
+      <ScrollReveal>
+        <p class="eyebrow text-teal-700">How it compares</p>
+        <h2
+          id="compare-heading"
+          class="mt-3 font-serif text-3xl md:text-4xl text-navy-900 leading-tight max-w-2xl"
+        >
+          Three paths to CMMC compliance.
+        </h2>
+      </ScrollReveal>
+
+      <ScrollReveal delay={120}>
+        <div class="mt-10 overflow-x-auto rounded-lg border border-navy-200 bg-bone">
+          <table class="w-full text-sm">
+            <thead class="bg-navy-900 text-white">
+              <tr>
+                <th scope="col" class="text-left px-4 py-3 font-semibold">Feature</th>
+                <th scope="col" class="px-4 py-3 font-semibold text-center">
+                  Free NIST templates
+                </th>
+                <th scope="col" class="px-4 py-3 font-semibold text-center bg-teal-800">
+                  FSO Shield Workbook
+                  <span class="block text-teal-100 font-normal text-xs mt-0.5">$147</span>
+                </th>
+                <th scope="col" class="px-4 py-3 font-semibold text-center">
+                  Consultant
+                  <span class="block text-navy-300 font-normal text-xs mt-0.5">$15K–$50K</span>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {
+                comparisonRows.map((row, i) => (
+                  <tr
+                    class:list={[
+                      i % 2 === 0 ? 'bg-white' : 'bg-navy-50',
+                      'border-t border-navy-100',
+                    ]}
+                  >
+                    <th
+                      scope="row"
+                      class="text-left px-4 py-3 font-medium text-navy-900 align-middle"
+                    >
+                      {row.label}
+                    </th>
+                    {[row.free, row.workbook, row.consultant].map((cell, ci) => (
+                      <td
+                        class:list={[
+                          'px-4 py-3 text-center align-middle',
+                          ci === 1 ? 'bg-teal-50/70' : '',
+                        ]}
+                      >
+                        {cell === true && (
+                          <span class="inline-flex items-center justify-center h-6 w-6 rounded-full bg-teal-100 text-teal-700" aria-label="Included">
+                            <svg class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                              <path fill-rule="evenodd" d="M16.704 5.29a1 1 0 0 1 .006 1.414l-7.07 7.115a1 1 0 0 1-1.42.007L3.29 8.91a1 1 0 1 1 1.42-1.408l4.22 4.257 6.36-6.4a1 1 0 0 1 1.414-.07z" clip-rule="evenodd" />
+                            </svg>
+                          </span>
+                        )}
+                        {cell === false && (
+                          <span class="inline-flex items-center justify-center h-6 w-6 rounded-full bg-red-50 text-red-600" aria-label="Not included">
+                            <svg class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                              <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 0 1 1.414 0L10 8.586l4.293-4.293a1 1 0 1 1 1.414 1.414L11.414 10l4.293 4.293a1 1 0 0 1-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 0 1-1.414-1.414L8.586 10 4.293 5.707a1 1 0 0 1 0-1.414z" clip-rule="evenodd" />
+                            </svg>
+                          </span>
+                        )}
+                        {cell === 'sometimes' && (
+                          <span class="text-xs text-navy-700 italic">Sometimes</span>
+                        )}
+                        {cell === 'partially' && (
+                          <span class="text-xs text-navy-700 italic">Partially</span>
+                        )}
+                      </td>
+                    ))}
+                  </tr>
+                ))
+              }
+              <tr class="bg-navy-900 text-white">
+                <th scope="row" class="text-left px-4 py-4 font-semibold">Cost</th>
+                <td class="px-4 py-4 text-center">Free</td>
+                <td class="px-4 py-4 text-center bg-teal-800">
+                  <span class="font-serif text-2xl">$147</span>
+                </td>
+                <td class="px-4 py-4 text-center">
+                  <span class="font-serif text-xl">$15,000+</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </ScrollReveal>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       Proof / testimonials (renders nothing if empty)
+       ============================================================ -->
+  <Testimonials />
+
+  <!-- ============================================================
+       FAQ
+       ============================================================ -->
+  <section
+    class="max-w-3xl mx-auto px-6 sm:px-8 lg:px-12 py-20"
+    aria-labelledby="cmmc-faq-heading"
+  >
+    <ScrollReveal>
+      <p class="eyebrow text-teal-700">Questions</p>
+      <h2
+        id="cmmc-faq-heading"
+        class="mt-3 font-serif text-3xl md:text-4xl text-navy-900 leading-tight"
+      >
+        Frequently asked.
+      </h2>
+    </ScrollReveal>
+
+    <dl class="mt-10 space-y-6">
+      {
+        faqItems.map((item, i) => (
+          <ScrollReveal delay={i * 50}>
+            <div class="rounded-md border border-navy-200 bg-bone p-6">
+              <dt class="font-serif text-xl text-navy-900 leading-snug">
+                {item.question}
+              </dt>
+              <dd class="mt-2 text-navy-800/85 leading-relaxed">
+                {item.answer}
+              </dd>
+            </div>
+          </ScrollReveal>
+        ))
+      }
+    </dl>
+  </section>
+
+  <!-- ============================================================
+       Bottom CTA
+       ============================================================ -->
+  <section
+    class="hero-ink relative overflow-hidden border-t-4 border-teal-500"
+    aria-labelledby="cmmc-final-cta"
+  >
+    <div class="hero-grid absolute inset-0 opacity-30" aria-hidden="true"></div>
+
+    <div
+      class="relative max-w-3xl mx-auto px-6 sm:px-8 lg:px-12 py-20 md:py-24 text-center"
+    >
+      <ScrollReveal>
+        <h2
+          id="cmmc-final-cta"
+          class="font-serif text-white text-3xl md:text-5xl leading-tight max-w-2xl mx-auto"
+        >
+          Your SPRS score is due. Know where you stand.
+        </h2>
+      </ScrollReveal>
+
+      <ScrollReveal delay={120}>
+        <a
+          href={WORKBOOK_URL}
+          rel="noopener"
+          class="mt-10 inline-flex items-center justify-center rounded-md bg-teal-500
+                 px-8 py-4 font-semibold text-navy-950 hover:bg-teal-400
+                 focus:outline-none focus:ring-2 focus:ring-offset-2
+                 focus:ring-teal-400 focus:ring-offset-navy-950
+                 transition-colors text-lg"
+        >
+          Get the CMMC Workbook — ${WORKBOOK_PRICE}
+        </a>
+        <p class="mt-5 eyebrow text-navy-300/80">
+          30-day money-back guarantee · Instant download
+        </p>
+      </ScrollReveal>
+    </div>
+  </section>
+</BaseLayout>

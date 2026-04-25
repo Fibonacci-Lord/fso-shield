@@ -1,0 +1,540 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import JsonLd from '../components/JsonLd.astro';
+import ScrollReveal from '../components/ScrollReveal.astro';
+import Testimonials from '../components/Testimonials.astro';
+
+const products = await getCollection('products');
+const bundle = products.find((p) => p.id === 'complete-dcsa-assessment-kit');
+
+const BUNDLE_URL = bundle?.data.buyUrl ?? '#';
+const BUNDLE_PRICE = 297;
+const INDIVIDUAL_TOTAL = 39 + 89 + 149 + 59; // 336
+
+const breadcrumbItems = [
+  { name: 'Home', url: '/' },
+  { name: 'Assessment Kit', url: '/assessment-kit', current: true },
+];
+
+const insideCards = [
+  {
+    title: 'NISPOM Self-Inspection Checklist',
+    individual: 39,
+    icon: 'checklist',
+    body: '77 inspection items across all 9 NISPOM sections. Each item annotated with what the DCSA assessor actually looks for. Findings summary table. Inspector certification page.',
+  },
+  {
+    title: 'Insider Threat Program Template Kit',
+    individual: 89,
+    icon: 'document',
+    body: 'Complete ITP documentation: program policy aligned to NISPOM 117.7 and SEAD-3, referral form, annual assessment form, and referral tracking log. The #1 cited finding, solved.',
+  },
+  {
+    title: 'Standard Practice Procedures Template',
+    individual: 149,
+    icon: 'document',
+    body: '12-section SPP with fill-in fields, NISPOM references on every page, KMP table, reporting requirements table, and training schedule. Table of contents included.',
+  },
+  {
+    title: 'Security Briefing Slide Decks (4-Pack)',
+    individual: 59,
+    icon: 'slides',
+    body: '4 PowerPoint decks: Initial Security Briefing, Annual Refresher, Foreign Travel, and Insider Threat Awareness. Speaker notes included. Navy/gold professional theme.',
+  },
+];
+
+const whoForItems = [
+  'New FSOs building a security program from scratch — this is your entire documentation starter kit.',
+  'Experienced FSOs preparing for a DCSA security vulnerability assessment — run the checklist, fill gaps with the templates, deliver briefings.',
+  'Small contractors (under 200 employees) who can\u2019t afford a $15K compliance consultant but need assessment-ready documentation.',
+  'FSO consultants who need professional templates to deliver to clients.',
+];
+
+const faqItems = [
+  {
+    question: 'What format are the files?',
+    answer:
+      'Word (.docx) for all documents and PowerPoint (.pptx) for briefing decks. Fully editable in Microsoft Office, Google Docs, or LibreOffice.',
+  },
+  {
+    question: 'Can I customize these for my facility?',
+    answer:
+      'Yes — every template has fill-in fields marked with brackets. Replace them with your facility name, CAGE code, KMP names, and specific procedures.',
+  },
+  {
+    question: 'Are these aligned to the current NISPOM?',
+    answer:
+      'Yes — all templates reference 32 CFR Part 117 (the current NISPOM as of 2026). We update templates when regulations change.',
+  },
+  {
+    question: 'What if my facility is non-possessing?',
+    answer:
+      'The templates cover both possessing and non-possessing facilities. Sections that only apply to possessing facilities are clearly marked.',
+  },
+  {
+    question: 'Do you offer refunds?',
+    answer: 'Yes — 30-day money-back guarantee, no questions asked.',
+  },
+  {
+    question: 'Can I use these for multiple facilities?',
+    answer:
+      'The license covers one facility. Contact us for multi-facility pricing.',
+  },
+];
+
+const productSchema = {
+  title: 'The Complete DCSA Assessment Kit',
+  description:
+    'All four core FSO compliance templates — self-inspection checklist, insider threat program documents, Standard Practice Procedures, and security briefing decks. Aligned to 32 CFR Part 117.',
+  category: 'Bundle',
+  buyUrl: BUNDLE_URL,
+  price: BUNDLE_PRICE,
+  image: '/og-default.png',
+};
+---
+
+<BaseLayout
+  title="The Complete DCSA Assessment Kit — $297"
+  description="Every template, checklist, and briefing deck an FSO needs to walk into a DCSA security vulnerability assessment with zero surprises. Aligned to 32 CFR Part 117."
+>
+  <JsonLd type="BreadcrumbList" data={{ items: breadcrumbItems }} />
+  <JsonLd type="Product" data={productSchema} />
+  <JsonLd type="FAQPage" data={{ questions: faqItems }} />
+
+  <!-- ============================================================
+       Hero — navy-950, bundle as the hero offer
+       ============================================================ -->
+  <section
+    class="hero-ink relative overflow-hidden border-b-4 border-gold-500"
+  >
+    <div class="hero-grid absolute inset-0 opacity-40" aria-hidden="true"></div>
+
+    <div
+      class="relative max-w-5xl mx-auto px-6 sm:px-8 lg:px-12 py-16 md:py-24"
+    >
+      <Breadcrumbs items={breadcrumbItems} tone="light" />
+
+      <ScrollReveal>
+        <p class="mt-6 eyebrow text-gold-300">The complete kit</p>
+      </ScrollReveal>
+
+      <ScrollReveal delay={80}>
+        <h1
+          class="mt-4 font-serif text-white leading-[1.03] tracking-[-0.025em]
+                 text-[2.75rem] sm:text-[3.5rem] md:text-[4.25rem] lg:text-[4.75rem]
+                 max-w-[22ch]"
+        >
+          Walk into your DCSA assessment with zero surprises.
+        </h1>
+      </ScrollReveal>
+
+      <ScrollReveal delay={160}>
+        <p class="mt-6 text-lg md:text-xl text-navy-100 max-w-2xl leading-relaxed">
+          Every template, checklist, and briefing deck an FSO needs — aligned
+          to 32&nbsp;CFR Part 117, ready to customize for your facility. Used
+          by FSOs at cleared contractors nationwide.
+        </p>
+      </ScrollReveal>
+
+      <ScrollReveal delay={240}>
+        <div class="mt-10 flex flex-col sm:flex-row sm:items-center gap-5">
+          <div class="flex items-baseline gap-3">
+            <span class="font-serif text-5xl md:text-6xl text-white">
+              ${BUNDLE_PRICE}
+            </span>
+            <span class="text-navy-300 text-sm">
+              All 4 products. One download.
+            </span>
+          </div>
+        </div>
+      </ScrollReveal>
+
+      <ScrollReveal delay={320}>
+        <div class="mt-8 flex flex-col sm:flex-row gap-3">
+          <a
+            href={BUNDLE_URL}
+            rel="noopener"
+            class="inline-flex items-center justify-center rounded-md bg-gold-500
+                   px-8 py-4 font-semibold text-navy-950 hover:bg-gold-400
+                   focus:outline-none focus:ring-2 focus:ring-offset-2
+                   focus:ring-gold-400 focus:ring-offset-navy-950
+                   transition-colors text-lg"
+          >
+            Get the Assessment Kit →
+          </a>
+          <a
+            href="#whats-inside"
+            class="inline-flex items-center justify-center rounded-md
+                   border border-gold-400/70 bg-transparent px-8 py-4
+                   font-semibold text-gold-300 hover:bg-navy-900
+                   hover:border-gold-400 transition-colors text-lg"
+          >
+            See what's inside ↓
+          </a>
+        </div>
+      </ScrollReveal>
+
+      <ScrollReveal delay={400}>
+        <p class="eyebrow mt-10 text-navy-300/80">
+          Instant download · 30-day money-back guarantee · Lifetime updates
+        </p>
+      </ScrollReveal>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       What's inside
+       ============================================================ -->
+  <section
+    id="whats-inside"
+    class="max-w-6xl mx-auto px-6 sm:px-8 lg:px-12 py-20"
+    aria-labelledby="whats-inside-heading"
+  >
+    <ScrollReveal>
+      <p class="eyebrow text-gold-700">Inside the kit</p>
+      <h2
+        id="whats-inside-heading"
+        class="mt-3 font-serif text-3xl md:text-4xl text-navy-900 leading-tight max-w-3xl"
+      >
+        Four documents. One download. Every gap closed.
+      </h2>
+    </ScrollReveal>
+
+    <div class="mt-12 grid gap-6 md:grid-cols-2">
+      {
+        insideCards.map((card, i) => (
+          <ScrollReveal delay={i * 80}>
+            <article class="card h-full rounded-lg p-6 md:p-7">
+              <div class="flex items-start gap-4">
+                <div
+                  class="shrink-0 flex h-12 w-12 items-center justify-center rounded-md bg-navy-900 text-gold-400"
+                  aria-hidden="true"
+                >
+                  {card.icon === 'checklist' && (
+                    <svg
+                      class="h-6 w-6"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.75"
+                    >
+                      <rect x="4" y="3" width="16" height="18" rx="2" />
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="m7.5 8.5 1.5 1.5 3-3M7.5 13.5l1.5 1.5 3-3M14.5 8h3M14.5 13h3M14.5 18h3"
+                      />
+                    </svg>
+                  )}
+                  {card.icon === 'document' && (
+                    <svg
+                      class="h-6 w-6"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.75"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-5z"
+                      />
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M14 3v5h5"
+                      />
+                      <path stroke-linecap="round" d="M8.5 13h7M8.5 16.5h5" />
+                    </svg>
+                  )}
+                  {card.icon === 'slides' && (
+                    <svg
+                      class="h-6 w-6"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.75"
+                    >
+                      <rect x="3" y="4" width="18" height="13" rx="1.5" />
+                      <path
+                        stroke-linecap="round"
+                        d="M3 14l4-3 3 2 4-4 7 5M8 20h8M12 17v3"
+                      />
+                    </svg>
+                  )}
+                </div>
+
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-baseline justify-between gap-3">
+                    <h3 class="font-serif text-xl text-navy-900 leading-snug">
+                      {card.title}
+                    </h3>
+                    <span class="shrink-0 text-sm text-navy-700">
+                      ${card.individual}
+                    </span>
+                  </div>
+                  <p class="mt-2 text-[0.95rem] text-navy-800/85 leading-relaxed">
+                    {card.body}
+                  </p>
+                </div>
+              </div>
+            </article>
+          </ScrollReveal>
+        ))
+      }
+    </div>
+
+    <ScrollReveal delay={200}>
+      <div
+        class="mt-10 rounded-md border border-navy-200 bg-navy-100/60 p-6 md:p-7 text-center"
+      >
+        <p class="text-navy-800 leading-relaxed">
+          Buying individually: <span class="font-semibold">${INDIVIDUAL_TOTAL}</span>. The complete kit:{' '}
+          <span class="font-semibold text-navy-900">${BUNDLE_PRICE}</span> — because the value is
+          in having everything, not saving ${INDIVIDUAL_TOTAL - BUNDLE_PRICE}.
+        </p>
+      </div>
+    </ScrollReveal>
+  </section>
+
+  <!-- ============================================================
+       Who this is for
+       ============================================================ -->
+  <section
+    class="bg-navy-100/70 border-y border-navy-200"
+    aria-labelledby="who-for-heading"
+  >
+    <div class="max-w-5xl mx-auto px-6 sm:px-8 lg:px-12 py-16 md:py-20">
+      <ScrollReveal>
+        <p class="eyebrow text-gold-700">Who this is for</p>
+        <h2
+          id="who-for-heading"
+          class="mt-3 font-serif text-3xl md:text-4xl text-navy-900 leading-tight max-w-2xl"
+        >
+          Built for the FSOs who do this work every day.
+        </h2>
+      </ScrollReveal>
+
+      <ul class="mt-10 grid gap-4 md:grid-cols-2" role="list">
+        {
+          whoForItems.map((item, i) => (
+            <ScrollReveal delay={i * 70}>
+              <li class="flex items-start gap-3 rounded-md border border-navy-200 bg-bone p-5">
+                <svg
+                  class="shrink-0 mt-0.5 h-5 w-5 text-gold-500"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                  aria-hidden="true"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M16.704 5.29a1 1 0 0 1 .006 1.414l-7.07 7.115a1 1 0 0 1-1.42.007L3.29 8.91a1 1 0 1 1 1.42-1.408l4.22 4.257 6.36-6.4a1 1 0 0 1 1.414-.07z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+                <span class="text-navy-900 leading-relaxed">{item}</span>
+              </li>
+            </ScrollReveal>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       The fear section — conversion driver
+       ============================================================ -->
+  <section
+    class="hero-ink relative overflow-hidden"
+    aria-labelledby="fear-heading"
+  >
+    <div class="hero-grid absolute inset-0 opacity-30" aria-hidden="true"></div>
+
+    <div
+      class="relative max-w-3xl mx-auto px-6 sm:px-8 lg:px-12 py-20 md:py-24"
+    >
+      <ScrollReveal>
+        <p class="eyebrow text-gold-300">The stakes</p>
+      </ScrollReveal>
+
+      <ScrollReveal delay={80}>
+        <h2
+          id="fear-heading"
+          class="mt-4 font-serif text-white leading-[1.05] tracking-[-0.025em]
+                 text-[2.25rem] sm:text-[2.75rem] md:text-[3.25rem] max-w-[24ch]"
+        >
+          What DCSA finds when you're not ready.
+        </h2>
+      </ScrollReveal>
+
+      <div
+        class="mt-8 space-y-5 text-navy-100 text-lg leading-relaxed max-w-2xl"
+      >
+        <ScrollReveal delay={160}>
+          <p>
+            The three most common findings in DCSA security vulnerability
+            assessments are: missing or incomplete Insider Threat Program
+            documentation, outdated Standard Practice Procedures, and gaps in
+            self-inspection records.
+          </p>
+        </ScrollReveal>
+        <ScrollReveal delay={220}>
+          <p>
+            Each finding triggers a corrective action timeline. Multiple
+            findings can escalate to an unfavorable determination — which means
+            your Facility Clearance is at risk.
+          </p>
+        </ScrollReveal>
+        <ScrollReveal delay={280}>
+          <p>
+            Most FSOs know their program has gaps. The problem isn't awareness
+            — it's having the time to build every document from scratch while
+            managing an active security program.
+          </p>
+        </ScrollReveal>
+        <ScrollReveal delay={340}>
+          <p>
+            This kit gives you the documentation DCSA expects to see,
+            structured the way assessors review it. Fill in your facility's
+            details, run the checklist, and close your gaps before the
+            assessor finds them.
+          </p>
+        </ScrollReveal>
+      </div>
+
+      <ScrollReveal delay={420}>
+        <a
+          href={BUNDLE_URL}
+          rel="noopener"
+          class="mt-10 inline-flex items-center justify-center rounded-md bg-gold-500
+                 px-8 py-4 font-semibold text-navy-950 hover:bg-gold-400
+                 focus:outline-none focus:ring-2 focus:ring-offset-2
+                 focus:ring-gold-400 focus:ring-offset-navy-950
+                 transition-colors text-lg"
+        >
+          Get the Assessment Kit — ${BUNDLE_PRICE}
+        </a>
+      </ScrollReveal>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       Cross-sell — CMMC workbook (different product line)
+       ============================================================ -->
+  <section
+    class="max-w-5xl mx-auto px-6 sm:px-8 lg:px-12 py-16 md:py-20"
+    aria-labelledby="cmmc-crosssell-heading"
+  >
+    <ScrollReveal>
+      <div
+        class="rounded-lg border border-teal-200 bg-teal-50/60 border-l-4 border-l-teal-600 p-6 md:p-8"
+      >
+        <div class="grid gap-6 md:grid-cols-[1.3fr_auto] md:items-center">
+          <div>
+            <p class="eyebrow text-teal-700">Expanding into CMMC?</p>
+            <h2
+              id="cmmc-crosssell-heading"
+              class="mt-2 font-serif text-2xl md:text-3xl text-navy-900 leading-snug"
+            >
+              The NISPOM kit covers your classified program. CMMC covers CUI.
+            </h2>
+            <p class="mt-3 text-navy-800/85 leading-relaxed max-w-2xl">
+              For CUI protection under CMMC Level 2, you also need the{' '}
+              <a
+                href="/cmmc-workbook"
+                class="font-semibold text-teal-800 underline underline-offset-2 hover:text-teal-600 transition-colors"
+                >CMMC Level 2 Self-Assessment Workbook</a
+              > — all 110 NIST SP 800-171 controls with evidence guidance,
+              assessor insights, and SPRS scoring.
+            </p>
+          </div>
+          <div class="md:text-right">
+            <a
+              href="/cmmc-workbook"
+              class="inline-flex items-center justify-center rounded-md bg-teal-700 px-6 py-3 font-semibold text-white hover:bg-teal-800 transition-colors whitespace-nowrap"
+            >
+              Add the CMMC Workbook — $147
+              <span class="ml-1" aria-hidden="true">→</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </ScrollReveal>
+  </section>
+
+  <!-- ============================================================
+       Proof / testimonials (renders nothing if empty)
+       ============================================================ -->
+  <Testimonials />
+
+  <!-- ============================================================
+       FAQ
+       ============================================================ -->
+  <section
+    class="max-w-3xl mx-auto px-6 sm:px-8 lg:px-12 py-20"
+    aria-labelledby="faq-heading"
+  >
+    <ScrollReveal>
+      <p class="eyebrow text-gold-700">Questions</p>
+      <h2
+        id="faq-heading"
+        class="mt-3 font-serif text-3xl md:text-4xl text-navy-900 leading-tight"
+      >
+        Frequently asked.
+      </h2>
+    </ScrollReveal>
+
+    <dl class="mt-10 space-y-6">
+      {
+        faqItems.map((item, i) => (
+          <ScrollReveal delay={i * 60}>
+            <div class="rounded-md border border-navy-200 bg-bone p-6">
+              <dt class="font-serif text-xl text-navy-900 leading-snug">
+                {item.question}
+              </dt>
+              <dd class="mt-2 text-navy-800/85 leading-relaxed">
+                {item.answer}
+              </dd>
+            </div>
+          </ScrollReveal>
+        ))
+      }
+    </dl>
+  </section>
+
+  <!-- ============================================================
+       Final CTA
+       ============================================================ -->
+  <section
+    class="bg-navy-100/70 border-y border-navy-200"
+    aria-labelledby="final-cta-heading"
+  >
+    <div
+      class="max-w-3xl mx-auto px-6 sm:px-8 lg:px-12 py-16 md:py-20 text-center"
+    >
+      <ScrollReveal>
+        <h2
+          id="final-cta-heading"
+          class="font-serif text-3xl md:text-4xl text-navy-900 leading-tight"
+        >
+          Stop rebuilding from a blank document.
+        </h2>
+        <p class="mt-4 text-navy-800/85 text-lg leading-relaxed max-w-xl mx-auto">
+          The Complete DCSA Assessment Kit. Instant download, 30-day refund,
+          lifetime updates.
+        </p>
+        <a
+          href={BUNDLE_URL}
+          rel="noopener"
+          class="mt-8 inline-flex items-center justify-center rounded-md bg-navy-900
+                 px-8 py-4 font-semibold text-white hover:bg-navy-950
+                 transition-colors text-lg"
+        >
+          Get the Assessment Kit — ${BUNDLE_PRICE}
+        </a>
+      </ScrollReveal>
+    </div>
+  </section>
+</BaseLayout>

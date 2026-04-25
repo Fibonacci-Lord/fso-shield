@@ -1,24 +1,216 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import ScrollReveal from '../components/ScrollReveal.astro';
 import EmailSignup from '../components/EmailSignup.astro';
 import { SITE } from '../consts';
+
+const breadcrumbItems = [
+  { name: 'Home', url: '/' },
+  { name: 'About', url: '/about', current: true },
+];
+
+const credentials = [
+  'Military veteran — operational security and information-handling experience from active service.',
+  'Industrial security professional focused on NISPOM compliance under 32 CFR Part 117.',
+  'Hands-on experience with DCSA security vulnerability assessments at cleared contractors.',
+  'CDSE-trained — completed the coursework every FSO is required to take, plus the specialty tracks most skip.',
+];
 ---
 
 <BaseLayout
-  title="About"
-  description={`About ${SITE.name} — practical industrial security training and NISPOM compliance resources for Facility Security Officers.`}
+  title={`About — ${SITE.name}`}
+  description={`About ${SITE.name} — practical industrial security training and NISPOM compliance resources built by an FSO, for FSOs.`}
 >
-  <section class="max-w-3xl mx-auto px-6 sm:px-8 lg:px-12 py-16 md:py-20">
-    <p class="eyebrow text-gold-700">About</p>
-    <h1
-      class="mt-3 font-serif text-5xl md:text-6xl text-navy-900 leading-[1.05] tracking-[-0.025em]"
+  <!-- ============================================================
+       Hero — navy-950 with portrait and credential line
+       ============================================================ -->
+  <section
+    class="hero-ink relative overflow-hidden border-b-4 border-gold-500"
+  >
+    <div class="hero-grid absolute inset-0 opacity-40" aria-hidden="true"></div>
+
+    <div
+      class="relative max-w-5xl mx-auto px-6 sm:px-8 lg:px-12 py-16 md:py-24"
     >
-      About {SITE.name}.
-    </h1>
-    <div class="prose-article mt-10">
-      {/* Add your own About content here. */}
+      <Breadcrumbs items={breadcrumbItems} tone="light" />
+
+      <div class="mt-8 grid gap-10 md:grid-cols-[1fr_auto] md:items-center">
+        <div>
+          <ScrollReveal>
+            <p class="eyebrow text-gold-300">About FSO Shield</p>
+          </ScrollReveal>
+
+          <ScrollReveal delay={80}>
+            <h1
+              class="mt-4 font-serif text-white leading-[1.03] tracking-[-0.025em]
+                     text-[2.75rem] sm:text-[3.5rem] md:text-[4rem] lg:text-[4.5rem]
+                     max-w-[14ch]"
+            >
+              Built by an FSO, for FSOs.
+            </h1>
+          </ScrollReveal>
+
+          <ScrollReveal delay={160}>
+            <p class="mt-6 text-lg md:text-xl text-navy-100 max-w-2xl leading-relaxed">
+              Jean Baptiste — military veteran and industrial security
+              professional. FSO Shield is the documentation framework I wish
+              I'd had when I started.
+            </p>
+          </ScrollReveal>
+        </div>
+
+        <ScrollReveal delay={220}>
+          <div class="shrink-0">
+            <!-- Portrait placeholder — swap for real photo -->
+            <div
+              class="h-44 w-44 md:h-52 md:w-52 rounded-full border-4 border-gold-500 bg-navy-800 flex items-center justify-center shadow-[0_18px_40px_-10px_rgba(0,0,0,0.55)]"
+              aria-label="Jean Baptiste"
+              role="img"
+            >
+              <!--
+                When the real photo is ready, replace the inner block with:
+                <img
+                  src="/images/jean-baptiste.jpg"
+                  alt="Jean Baptiste, founder of FSO Shield"
+                  class="h-full w-full rounded-full object-cover"
+                />
+              -->
+              <span class="font-serif text-5xl md:text-6xl text-gold-400">
+                JB
+              </span>
+            </div>
+            <p class="mt-4 text-center font-serif text-xl text-white">
+              Jean Baptiste
+            </p>
+            <p class="mt-1 text-center text-sm text-navy-200">
+              Military veteran · Industrial security professional
+            </p>
+          </div>
+        </ScrollReveal>
+      </div>
     </div>
-    <div class="mt-14">
+  </section>
+
+  <!-- ============================================================
+       The story
+       ============================================================ -->
+  <section
+    class="max-w-3xl mx-auto px-6 sm:px-8 lg:px-12 py-16 md:py-20"
+    aria-labelledby="story-heading"
+  >
+    <ScrollReveal>
+      <p class="eyebrow text-gold-700">Why this site exists</p>
+      <h2
+        id="story-heading"
+        class="mt-3 font-serif text-3xl md:text-4xl text-navy-900 leading-tight"
+      >
+        I built FSO Shield because I got tired of watching FSOs scramble.
+      </h2>
+    </ScrollReveal>
+
+    <div class="mt-10 prose-article">
+      <p>
+        I built FSO Shield because I got tired of watching FSOs — especially at
+        small contractors — scramble to build compliance documentation from
+        scratch every time DCSA came knocking.
+      </p>
+      <p>
+        I've been in industrial security for years. I've seen what DCSA
+        assessors actually check, what findings they cite most, and what
+        separates facilities that pass cleanly from those that don't. The
+        difference is almost never knowledge — it's documentation. The FSOs
+        who struggle are the ones rebuilding an SPP from a blank Word document
+        at 10pm the night before their assessment.
+      </p>
+      <p>
+        These templates are what I wish I'd had when I started. They're
+        structured the way assessors review them, annotated with the NISPOM
+        references that matter, and built to be customized — not just
+        downloaded and forgotten.
+      </p>
+      <p>
+        FSO Shield isn't a consulting firm. I'm not selling you a $15,000
+        engagement. I'm giving you the same documentation framework that large
+        primes use, at a price a 20-person cleared contractor can afford.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       Credentials
+       ============================================================ -->
+  <section
+    class="bg-navy-100/70 border-y border-navy-200"
+    aria-labelledby="credentials-heading"
+  >
+    <div class="max-w-5xl mx-auto px-6 sm:px-8 lg:px-12 py-16 md:py-20">
+      <ScrollReveal>
+        <p class="eyebrow text-gold-700">Background</p>
+        <h2
+          id="credentials-heading"
+          class="mt-3 font-serif text-3xl md:text-4xl text-navy-900 leading-tight max-w-2xl"
+        >
+          The background behind the templates.
+        </h2>
+      </ScrollReveal>
+
+      <ul class="mt-10 grid gap-4 md:grid-cols-2" role="list">
+        {
+          credentials.map((item, i) => (
+            <ScrollReveal delay={i * 70}>
+              <li class="flex items-start gap-3 rounded-md border border-navy-200 bg-bone p-5">
+                <svg
+                  class="shrink-0 mt-0.5 h-5 w-5 text-gold-500"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                  aria-hidden="true"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M16.704 5.29a1 1 0 0 1 .006 1.414l-7.07 7.115a1 1 0 0 1-1.42.007L3.29 8.91a1 1 0 1 1 1.42-1.408l4.22 4.257 6.36-6.4a1 1 0 0 1 1.414-.07z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+                <span class="text-navy-900 leading-relaxed">{item}</span>
+              </li>
+            </ScrollReveal>
+          ))
+        }
+      </ul>
+
+      <ScrollReveal delay={320}>
+        <p class="mt-8 text-sm text-navy-700 italic">
+          FSO Shield is for general educational purposes and is not legal
+          advice. Nothing on this site should be treated as a substitute for
+          counsel from your legal or compliance team.
+        </p>
+      </ScrollReveal>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       Contact CTA
+       ============================================================ -->
+  <section
+    class="max-w-3xl mx-auto px-6 sm:px-8 lg:px-12 py-16 md:py-20 text-center"
+  >
+    <ScrollReveal>
+      <h2
+        class="font-serif text-3xl md:text-4xl text-navy-900 leading-tight"
+      >
+        Have a question about NISPOM compliance?
+      </h2>
+      <p class="mt-4 text-navy-800/85 text-lg leading-relaxed max-w-xl mx-auto">
+        <a
+          href="/contact"
+          class="font-semibold text-navy-900 underline underline-offset-2 hover:text-gold-700 transition-colors"
+          >Contact me</a
+        > — I read every message.
+      </p>
+    </ScrollReveal>
+
+    <div class="mt-12">
       <EmailSignup />
     </div>
   </section>

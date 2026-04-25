@@ -1,0 +1,66 @@
+---
+/**
+ * CmmcCTA — editorial callout card for the CMMC Level 2 Self-Assessment
+ * Workbook. Teal-accented to distinguish it from the NISPOM LeadMagnetCTA.
+ *
+ * Used in CMMC articles and anywhere a contextual cybersecurity CTA fits.
+ */
+
+interface Props {
+  /** Tighten spacing for inline placement inside long-form articles. */
+  compact?: boolean;
+}
+
+const { compact = false } = Astro.props;
+---
+
+<aside
+  class:list={[
+    'relative rounded-lg border border-teal-200 bg-teal-50/60',
+    'border-l-4 border-l-teal-600',
+    compact ? 'p-5' : 'p-6 md:p-7',
+  ]}
+  aria-label="CMMC workbook"
+>
+  <div class="flex items-start gap-4">
+    <div
+      class="shrink-0 mt-0.5 flex h-10 w-10 items-center justify-center rounded-md bg-teal-800 text-teal-100"
+      aria-hidden="true"
+    >
+      <svg
+        class="h-5 w-5"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.75"
+      >
+        <rect x="4" y="3" width="16" height="18" rx="2" />
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M8 8h8M8 12h8M8 16h5"
+        />
+      </svg>
+    </div>
+
+    <div class="flex-1 min-w-0">
+      <p class="eyebrow text-teal-700">CMMC Level 2</p>
+      <p
+        class="mt-1.5 font-serif text-[1.3rem] md:text-[1.4rem] text-navy-900 leading-snug"
+      >
+        Self-assess all 110 NIST SP 800-171 controls.
+      </p>
+      <p class="mt-1 text-[0.95rem] text-navy-800/80 leading-relaxed">
+        Evidence guidance, assessor insights, SPRS score calculator, and
+        POA&amp;M tracker — in one structured workbook.
+      </p>
+      <a
+        href="/cmmc-workbook"
+        class="mt-3 inline-flex items-center gap-1 text-sm font-semibold text-teal-800 hover:text-teal-600 transition-colors"
+      >
+        Get the CMMC Workbook — $147
+        <span aria-hidden="true">→</span>
+      </a>
+    </div>
+  </div>
+</aside>

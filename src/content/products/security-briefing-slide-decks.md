@@ -1,7 +1,7 @@
 ---
 title: "Security Briefing Slide Decks (4-Pack)"
 description: "Four ready-to-deliver PowerPoint briefings — Initial, Annual Refresher, Foreign Travel, and Insider Threat Awareness — with speaker notes and customizable placeholders."
-price: 47
+price: 59
 category: "Briefing Slides"
 buyUrl: "https://fsoshield.lemonsqueezy.com/checkout/buy/193f907b-2e5c-4790-9164-33948dd6d5a7"
 featured: true

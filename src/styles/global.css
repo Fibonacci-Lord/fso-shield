@@ -32,6 +32,20 @@
   --color-gold-900: #4A3310;
 
   /* ============================================================
+     Teal — CMMC product line (distinct from NISPOM navy/gold)
+     ============================================================ */
+  --color-teal-50: #F0FDFA;
+  --color-teal-100: #CCFBF1;
+  --color-teal-200: #99F6E4;
+  --color-teal-300: #5EEAD4;
+  --color-teal-400: #2DD4BF;
+  --color-teal-500: #14B8A6;
+  --color-teal-600: #0D9488;
+  --color-teal-700: #0F766E;
+  --color-teal-800: #115E59;
+  --color-teal-900: #134E4A;
+
+  /* ============================================================
      Warm neutrals — cards and muted text
      ============================================================ */
   --color-bone: #FAFAF7;

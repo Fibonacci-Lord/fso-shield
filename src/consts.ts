@@ -15,8 +15,16 @@ export const SITE = {
   },
 };
 
-export const NAV_LINKS = [
+export interface NavLink {
+  href: string;
+  label: string;
+  /** Accent links get the gold-outline treatment (like Free Checklist). */
+  accent?: boolean;
+}
+
+export const NAV_LINKS: NavLink[] = [
   { href: '/', label: 'Home' },
+  { href: '/prepare', label: 'Prepare', accent: true },
   { href: '/fso-training', label: 'Training' },
   { href: '/nispom-compliance', label: 'Compliance' },
   { href: '/security-clearances', label: 'Clearances' },

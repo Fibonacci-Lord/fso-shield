@@ -26,8 +26,8 @@ const emailId = `lead-magnet-email-${uid}`;
 ---
 
 <BaseLayout
-  title="Free NISPOM Quick-Check — 15 items DCSA cites most"
-  description="Free self-inspection starter for Facility Security Officers. Download the 15 NISPOM items DCSA cites most often and walk into your next assessment prepared."
+  title="Is Your Facility Ready for a DCSA Assessment? — Free 15-Item Quick-Check"
+  description="Free pre-assessment gut check for Facility Security Officers. 15 items covering findings DCSA cites in 80% of security vulnerability assessments. Know where you stand before the assessor does."
 >
   <JsonLd type="BreadcrumbList" data={{ items: breadcrumbItems }} />
 
@@ -55,15 +55,15 @@ const emailId = `lead-magnet-email-${uid}`;
               class="mt-4 font-serif text-white leading-[1.03] tracking-[-0.025em]
                      text-[2.75rem] sm:text-[3.5rem] md:text-[4rem] lg:text-[4.25rem]"
             >
-              The 15 NISPOM items DCSA cites most.
+              Is your facility ready for a DCSA assessment?
             </h1>
           </ScrollReveal>
 
           <ScrollReveal delay={160}>
             <p class="mt-6 text-lg md:text-xl text-navy-100 max-w-xl leading-relaxed">
-              Free self-inspection starter checklist. Download it, run it
-              before your next assessment, and stop guessing what they'll
-              check.
+              15-item quick check covering the findings DCSA cites in 80% of
+              security vulnerability assessments. Takes 10 minutes. Know where
+              you stand before the assessor does.
             </p>
           </ScrollReveal>
         </div>
@@ -117,10 +117,20 @@ const emailId = `lead-magnet-email-${uid}`;
             <div
               data-kit-success
               hidden
-              class="mt-4 rounded-md border border-gold-400/40 bg-gold-500/10 px-4 py-3 text-gold-100"
+              class="mt-4 rounded-md border border-gold-400/40 bg-gold-500/10 px-4 py-3 text-gold-100 leading-relaxed"
             >
-              <strong class="text-white">Check your inbox.</strong> Your
-              checklist is on the way.
+              <strong class="text-white">Check your inbox</strong> for your
+              Quick-Check. When you're ready for the full 77-item inspection —{' '}
+              <a
+                href="/templates"
+                class="underline underline-offset-2 hover:text-white transition-colors"
+                >get the Self-Inspection Checklist ($39)</a
+              > or{' '}
+              <a
+                href="/assessment-kit"
+                class="underline underline-offset-2 hover:text-white transition-colors"
+                >get the Complete Assessment Kit ($297)</a
+              > and close every gap at once.
             </div>
             <div
               data-kit-error
@@ -206,7 +216,7 @@ const emailId = `lead-magnet-email-${uid}`;
   </section>
 
   <!-- ============================================================
-       Upsell to the $27 full version
+       Upsell — full checklist or the complete kit
        ============================================================ -->
   <section
     class="bg-navy-100/70 border-y border-navy-200"
@@ -214,12 +224,12 @@ const emailId = `lead-magnet-email-${uid}`;
   >
     <div class="max-w-5xl mx-auto px-6 sm:px-8 lg:px-12 py-16 md:py-20">
       <ScrollReveal>
-        <p class="eyebrow text-gold-700">Need the full version?</p>
+        <p class="eyebrow text-gold-700">Ready for the full version?</p>
         <h2
           id="upsell-heading"
           class="mt-3 font-serif text-3xl md:text-4xl text-navy-900 leading-tight max-w-2xl"
         >
-          The complete 77-item NISPOM Self-Inspection Checklist.
+          Close every gap — not just the top 15.
         </h2>
       </ScrollReveal>
 
@@ -228,21 +238,9 @@ const emailId = `lead-magnet-email-${uid}`;
           class="mt-10 grid gap-8 md:grid-cols-2 rounded-lg card-featured card p-6 md:p-10"
         >
           <div>
-            <p class="eyebrow text-navy-700">The free version</p>
+            <p class="eyebrow text-navy-700">The full checklist</p>
             <p class="mt-2 font-serif text-2xl text-navy-900">
-              15 items
-            </p>
-            <ul class="mt-4 space-y-2 text-navy-800/85 text-[0.95rem] leading-relaxed" role="list">
-              <li>The most commonly cited findings</li>
-              <li>Checkboxes and NISPOM references</li>
-              <li>"What the assessor looks for" notes</li>
-            </ul>
-          </div>
-
-          <div class="md:border-l md:border-navy-200 md:pl-8">
-            <p class="eyebrow text-gold-700">The complete checklist</p>
-            <p class="mt-2 font-serif text-2xl text-navy-900">
-              77 items · 9 sections · $27
+              77 items · 9 sections · $39
             </p>
             <ul class="mt-4 space-y-2 text-navy-800/85 text-[0.95rem] leading-relaxed" role="list">
               <li>All 9 NISPOM sections under 32 CFR Part 117</li>
@@ -251,12 +249,38 @@ const emailId = `lead-magnet-email-${uid}`;
               <li>Detailed assessor annotations per item</li>
               <li>Instant download, lifetime updates</li>
             </ul>
-
             <a
               href="/templates"
-              class="mt-6 inline-flex items-center gap-1 rounded-md bg-navy-900 text-white px-5 py-2.5 font-semibold hover:bg-navy-950 transition-colors"
+              class="mt-6 inline-flex items-center gap-1 rounded-md bg-navy-800 text-white px-5 py-2.5 font-semibold hover:bg-navy-900 transition-colors"
             >
-              Get the complete checklist
+              Get the checklist — $39
+              <span aria-hidden="true">→</span>
+            </a>
+          </div>
+
+          <div class="md:border-l md:border-navy-200 md:pl-8">
+            <div class="flex items-center gap-3">
+              <p class="eyebrow text-gold-700">The complete kit</p>
+              <span class="inline-block rounded-full bg-gold-500 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-navy-950">
+                Best value
+              </span>
+            </div>
+            <p class="mt-2 font-serif text-2xl text-navy-900">
+              4 templates · 1 download · $297
+            </p>
+            <ul class="mt-4 space-y-2 text-navy-800/85 text-[0.95rem] leading-relaxed" role="list">
+              <li>The full 77-item Self-Inspection Checklist</li>
+              <li>Complete Insider Threat Program kit (the #1 finding)</li>
+              <li>12-section Standard Practice Procedures template</li>
+              <li>Four ready-to-deliver briefing decks</li>
+              <li>Everything DCSA expects to see — one download</li>
+            </ul>
+
+            <a
+              href="/assessment-kit"
+              class="mt-6 inline-flex items-center gap-1 rounded-md bg-gold-500 text-navy-950 px-5 py-2.5 font-semibold hover:bg-gold-400 transition-colors"
+            >
+              Get the Complete Assessment Kit — $297
               <span aria-hidden="true">→</span>
             </a>
           </div>

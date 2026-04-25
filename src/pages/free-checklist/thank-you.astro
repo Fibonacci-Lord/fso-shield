@@ -126,7 +126,7 @@ const nextSteps = [
   </section>
 
   <!-- ============================================================
-       Upsell — the $27 full 77-item checklist
+       Upsell — full checklist + the complete kit
        ============================================================ -->
   <section
     class="bg-navy-100/70 border-y border-navy-200"
@@ -139,13 +139,12 @@ const nextSteps = [
           id="upsell-heading"
           class="mt-3 font-serif text-3xl md:text-4xl text-navy-900 leading-tight max-w-2xl"
         >
-          Upgrade to the full 77-item NISPOM Self-Inspection Checklist.
+          Close every gap — not just the top 15.
         </h2>
         <p class="mt-4 text-navy-800/85 leading-relaxed max-w-2xl">
           The free version covers the 15 most-cited findings. The complete
-          checklist walks every NISPOM section under 32 CFR Part 117 — with
-          assessor annotations, a findings summary table, and a corrective
-          action tracker.
+          checklist walks every NISPOM section under 32&nbsp;CFR Part 117 — or
+          skip ahead and get every FSO template in one kit.
         </p>
       </ScrollReveal>
 
@@ -154,24 +153,9 @@ const nextSteps = [
           class="mt-10 grid gap-8 md:grid-cols-2 rounded-lg card-featured card p-6 md:p-10"
         >
           <div>
-            <p class="eyebrow text-navy-700">You just got</p>
+            <p class="eyebrow text-navy-700">The full checklist</p>
             <p class="mt-2 font-serif text-2xl text-navy-900">
-              15 items · free
-            </p>
-            <ul
-              class="mt-4 space-y-2 text-navy-800/85 text-[0.95rem] leading-relaxed"
-              role="list"
-            >
-              <li>The most commonly cited findings</li>
-              <li>Checkboxes and NISPOM references</li>
-              <li>"What the assessor looks for" notes</li>
-            </ul>
-          </div>
-
-          <div class="md:border-l md:border-navy-200 md:pl-8">
-            <p class="eyebrow text-gold-700">The complete checklist</p>
-            <p class="mt-2 font-serif text-2xl text-navy-900">
-              77 items · 9 sections · $27
+              77 items · 9 sections · $39
             </p>
             <ul
               class="mt-4 space-y-2 text-navy-800/85 text-[0.95rem] leading-relaxed"
@@ -181,14 +165,42 @@ const nextSteps = [
               <li>Findings summary table and corrective-action tracker</li>
               <li>Inspector certification page</li>
               <li>Detailed assessor annotations per item</li>
+            </ul>
+            <a
+              href={fullChecklistUrl}
+              class="mt-6 inline-flex items-center gap-1 rounded-md bg-navy-800 text-white px-5 py-2.5 font-semibold hover:bg-navy-900 transition-colors"
+            >
+              Get the checklist — $39
+              <span aria-hidden="true">→</span>
+            </a>
+          </div>
+
+          <div class="md:border-l md:border-navy-200 md:pl-8">
+            <div class="flex items-center gap-3">
+              <p class="eyebrow text-gold-700">The complete kit</p>
+              <span class="inline-block rounded-full bg-gold-500 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-navy-950">
+                Best value
+              </span>
+            </div>
+            <p class="mt-2 font-serif text-2xl text-navy-900">
+              4 templates · 1 download · $297
+            </p>
+            <ul
+              class="mt-4 space-y-2 text-navy-800/85 text-[0.95rem] leading-relaxed"
+              role="list"
+            >
+              <li>The full 77-item Self-Inspection Checklist</li>
+              <li>Complete Insider Threat Program kit (the #1 finding)</li>
+              <li>12-section Standard Practice Procedures template</li>
+              <li>Four ready-to-deliver briefing decks</li>
               <li>Instant download, lifetime updates</li>
             </ul>
 
             <a
-              href={fullChecklistUrl}
-              class="mt-6 inline-flex items-center gap-1 rounded-md bg-navy-900 text-white px-5 py-2.5 font-semibold hover:bg-navy-950 transition-colors"
+              href="/assessment-kit"
+              class="mt-6 inline-flex items-center gap-1 rounded-md bg-gold-500 text-navy-950 px-5 py-2.5 font-semibold hover:bg-gold-400 transition-colors"
             >
-              Get the complete checklist
+              Get the Complete Assessment Kit — $297
               <span aria-hidden="true">→</span>
             </a>
           </div>

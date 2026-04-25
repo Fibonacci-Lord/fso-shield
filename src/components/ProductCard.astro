@@ -1,11 +1,17 @@
 ---
 import type { CollectionEntry } from 'astro:content';
+import { productInsides } from '../data/productInsides';
 
 interface Props {
   product: CollectionEntry<'products'>;
+  /** Hide the "included in kit" line (e.g. when rendering the bundle itself). */
+  hideBundleNote?: boolean;
+  /** Render the expandable "What's inside" details (use on /templates). */
+  showInside?: boolean;
 }
 
-const { product } = Astro.props;
+const { product, hideBundleNote = false, showInside = false } = Astro.props;
+const insideItems = productInsides[product.id] ?? [];
 const { title, description, price, category, buyUrl, featured, image } =
   product.data;
 
@@ -14,17 +20,43 @@ const priceDisplay =
     ? `$${price.toFixed(price % 1 === 0 ? 0 : 2)}`
     : price;
 
+const isBundle = product.id === 'complete-dcsa-assessment-kit';
+const isCmmc = product.id === 'cmmc-level-2-workbook';
+
+// Short CTA text by product type.
+function ctaLabel(cat: string, id: string): string {
+  const c = cat.toLowerCase();
+  const d = id.toLowerCase();
+  if (c.includes('bundle') || d.includes('assessment-kit')) return 'Get the kit';
+  if (c.includes('workbook')) return 'Get the workbook';
+  if (c.includes('checklist')) return 'Get the checklist';
+  if (d.includes('insider-threat')) return 'Get the ITP kit';
+  if (c.includes('slide') || c.includes('briefing')) return 'Get the decks';
+  return 'Get the template';
+}
+
 // Icon selection by category keyword.
-type IconKey = 'checklist' | 'slides' | 'document';
+type IconKey = 'checklist' | 'slides' | 'document' | 'workbook';
 
 function iconForCategory(cat: string): IconKey {
   const c = cat.toLowerCase();
   if (c.includes('checklist')) return 'checklist';
   if (c.includes('slide') || c.includes('briefing')) return 'slides';
+  if (c.includes('workbook')) return 'workbook';
   return 'document';
 }
 
 const iconKey = iconForCategory(category);
+const cta = ctaLabel(category, product.id);
+
+// CMMC products get a distinct teal treatment to separate the product line
+// from the NISPOM (navy/gold) offerings.
+const headerBg = isCmmc ? 'bg-teal-800' : 'bg-navy-900';
+const iconColor = isCmmc ? 'text-teal-300' : 'text-gold-500';
+const priceColor = isCmmc ? 'text-teal-800' : 'text-navy-900';
+const buttonClass = isCmmc
+  ? 'inline-flex items-center gap-1 rounded-md bg-teal-700 text-white px-4 py-2 text-sm font-semibold hover:bg-teal-800 transition-colors'
+  : 'inline-flex items-center gap-1 rounded-md bg-navy-900 text-white px-4 py-2 text-sm font-semibold hover:bg-navy-950 transition-colors';
 ---
 
 <article
@@ -53,14 +85,14 @@ const iconKey = iconForCategory(category);
         href={buyUrl}
         rel="noopener"
         target="_blank"
-        class="relative block h-24 bg-navy-900 hero-grid"
+        class:list={['relative block h-24 hero-grid', headerBg]}
         aria-hidden="true"
         tabindex="-1"
       >
         <div class="absolute inset-0 flex items-center justify-center">
           {iconKey === 'checklist' && (
             <svg
-              class="h-10 w-10 text-gold-500"
+              class:list={['h-10 w-10', iconColor]}
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -77,7 +109,7 @@ const iconKey = iconForCategory(category);
           )}
           {iconKey === 'slides' && (
             <svg
-              class="h-10 w-10 text-gold-500"
+              class:list={['h-10 w-10', iconColor]}
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -88,9 +120,30 @@ const iconKey = iconForCategory(category);
               <path stroke-linecap="round" d="M3 14l4-3 3 2 4-4 7 5M8 20h8M12 17v3" />
             </svg>
           )}
+          {iconKey === 'workbook' && (
+            <svg
+              class:list={['h-10 w-10', iconColor]}
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              aria-hidden="true"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M4 4h10a3 3 0 0 1 3 3v13H7a3 3 0 0 1-3-3V4z"
+              />
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M4 17a3 3 0 0 1 3-3h10M9 9h5M9 12h4"
+              />
+            </svg>
+          )}
           {iconKey === 'document' && (
             <svg
-              class="h-10 w-10 text-gold-500"
+              class:list={['h-10 w-10', iconColor]}
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -113,12 +166,25 @@ const iconKey = iconForCategory(category);
 
   <div class="p-5 flex flex-col flex-1">
     <div class="flex items-center justify-between gap-2">
-      <span class="eyebrow text-gold-700">{category}</span>
+      <span
+        class:list={[
+          'eyebrow',
+          isCmmc ? 'text-teal-700' : 'text-gold-700',
+        ]}
+      >
+        {category}
+      </span>
       {
-        featured && (
-          <span class="inline-block rounded-full bg-gold-100 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-gold-800">
-            Featured
+        isCmmc ? (
+          <span class="inline-block rounded-full bg-teal-600 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white">
+            New
           </span>
+        ) : (
+          featured && (
+            <span class="inline-block rounded-full bg-gold-100 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-gold-800">
+              Featured
+            </span>
+          )
         )
       }
     </div>
@@ -128,7 +194,10 @@ const iconKey = iconForCategory(category);
         href={buyUrl}
         rel="noopener"
         target="_blank"
-        class="hover:text-gold-700 transition-colors"
+        class:list={[
+          'transition-colors',
+          isCmmc ? 'hover:text-teal-700' : 'hover:text-gold-700',
+        ]}
       >
         {title}
       </a>
@@ -138,16 +207,81 @@ const iconKey = iconForCategory(category);
       {description}
     </p>
 
+    {
+      showInside && insideItems.length > 0 && (
+        <details class="mt-4 group/details">
+          <summary
+            class:list={[
+              'cursor-pointer list-none text-xs font-semibold inline-flex items-center gap-1 transition-colors',
+              isCmmc
+                ? 'text-teal-800 hover:text-teal-600'
+                : 'text-navy-800 hover:text-gold-700',
+            ]}
+          >
+            <svg
+              class="h-3.5 w-3.5 transition-transform group-open/details:rotate-90"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+              aria-hidden="true"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M7.21 14.77a.75.75 0 0 1 .02-1.06L11.168 10 7.23 6.29a.75.75 0 1 1 1.04-1.08l4.5 4.25a.75.75 0 0 1 0 1.08l-4.5 4.25a.75.75 0 0 1-1.06-.02z"
+                clip-rule="evenodd"
+              />
+            </svg>
+            What's inside
+          </summary>
+          <ul
+            class="mt-2 space-y-1.5 text-[0.85rem] text-navy-800/85 leading-relaxed pl-5 list-disc marker:text-navy-400"
+            role="list"
+          >
+            {insideItems.map((item) => <li>{item}</li>)}
+          </ul>
+        </details>
+      )
+    }
+
+    {
+      !isBundle && !isCmmc && !hideBundleNote && (
+        <p class="mt-3 text-xs text-navy-700">
+          Included in{' '}
+          <a
+            href="/assessment-kit"
+            class="font-semibold text-navy-900 underline underline-offset-2 hover:text-gold-700 transition-colors"
+          >
+            The Complete Assessment Kit →
+          </a>
+        </p>
+      )
+    }
+
+    {
+      isCmmc && (
+        <p class="mt-3 text-xs text-navy-700">
+          Separate from the NISPOM kit —{' '}
+          <a
+            href="/cmmc-workbook"
+            class="font-semibold text-teal-800 underline underline-offset-2 hover:text-teal-600 transition-colors"
+          >
+            See the CMMC workbook →
+          </a>
+        </p>
+      )
+    }
+
     <div class="mt-5 flex items-center justify-between">
-      <span class="font-semibold text-navy-900 text-lg">{priceDisplay}</span>
+      <span class:list={['font-semibold text-lg', priceColor]}>
+        {priceDisplay}
+      </span>
       <a
         href={buyUrl}
         rel="noopener"
         target="_blank"
-        class="inline-flex items-center gap-1 rounded-md bg-navy-900 text-white px-4 py-2 text-sm font-semibold hover:bg-navy-950 transition-colors"
+        class={buttonClass}
       >
-        View product
-        <span aria-hidden="true">↗</span>
+        {cta}
+        <span aria-hidden="true">→</span>
       </a>
     </div>
   </div>
